@@ -16,7 +16,7 @@ spec:
       serviceAccountName: wandb-launch-serviceaccount
       containers:
       - name: launch-agent
-        image: wandb/launch-agent-dev:42b7b2a5
+        image: launch-agent:local
         resources:
           limits:
             memory: "2Gi"
@@ -45,3 +45,12 @@ spec:
             secretKeyRef:
               name: wandb-api-key
               key: password
+        volumeMounts:
+        - name: aws-secret
+          mountPath: /home/launch_agent/.aws
+          readOnly: true
+      volumes:
+      - name: aws-secret
+        secret:
+          secretName: aws-secret
+

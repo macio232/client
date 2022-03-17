@@ -18,4 +18,4 @@ class VariablesAreInputTypes(ValidationRule):
 
     @staticmethod
     def non_input_type_on_variable_message(variable_name, type_name):
-        return 'Variable "${}" cannot be non-input type "{}".'.format(variable_name, type_name)
+        return f'Variable "${variable_name}" cannot be non-input type "{type_name}".'

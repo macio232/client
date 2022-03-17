@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.crystal
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,8 +57,7 @@ class CrystalLexer(ExtendedRegexLexer):
         ctx.pos = match.start(5)
         ctx.end = match.end(5)
         # this may find other heredocs
-        for i, t, v in self.get_tokens_unprocessed(context=ctx):
-            yield i, t, v
+        yield from self.get_tokens_unprocessed(context=ctx)
         ctx.pos = match.end()
 
         if outermost:

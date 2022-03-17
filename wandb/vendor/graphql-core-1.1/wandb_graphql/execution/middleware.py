@@ -7,7 +7,7 @@ from promise import Promise
 MIDDLEWARE_RESOLVER_FUNCTION = 'resolve'
 
 
-class MiddlewareManager(object):
+class MiddlewareManager:
 
     def __init__(self, *middlewares, **kwargs):
         self.middlewares = middlewares

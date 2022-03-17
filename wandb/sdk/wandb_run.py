@@ -154,7 +154,7 @@ class RunStatusChecker:
                     if (
                         hr.http_status_code == 200 or hr.http_status_code == 0
                     ):  # we use 0 for non-http errors (eg wandb errors)
-                        wandb.termlog("{}".format(hr.http_response_text))
+                        wandb.termlog(f"{hr.http_response_text}")
                     else:
                         wandb.termlog(
                             "{} encountered ({}), retrying request".format(
@@ -530,8 +530,8 @@ class Run:
 
     def __setattr__(self, attr: str, value: object) -> None:
         if getattr(self, "_frozen", None) and not hasattr(self, attr):
-            raise Exception("Attribute {} is not supported on Run object.".format(attr))
-        super(Run, self).__setattr__(attr, value)
+            raise Exception(f"Attribute {attr} is not supported on Run object.")
+        super().__setattr__(attr, value)
 
     @staticmethod
     def _telemetry_imports(imp: telemetry.TelemetryImports) -> None:
@@ -981,7 +981,7 @@ class Run:
                 )
         for v in kwargs:
             wandb.termwarn(
-                "Label added for unsupported key '{}' (ignored).".format(v),
+                f"Label added for unsupported key '{v}' (ignored).",
                 repeat=False,
             )
 
@@ -1031,7 +1031,7 @@ class Run:
             if isinstance(lines, str):
                 lines = lines.split()
         except Exception as e:
-            logger.info("Unable to probe notebook: {}".format(e))
+            logger.info(f"Unable to probe notebook: {e}")
             return
         if lines:
             self._label_probe_lines(lines)
@@ -1551,11 +1551,9 @@ class Run:
             if os.path.isabs(glob_str):
                 base_path = os.path.dirname(glob_str)
                 wandb.termwarn(
-                    (
                         "Saving files without folders. If you want to preserve "
                         "sub directories pass base_path to wandb.save, i.e. "
                         'wandb.save("/mnt/folder/file.h5", base_path="/mnt")'
-                    )
                 )
             else:
                 base_path = "."
@@ -2040,7 +2038,7 @@ class Run:
         if not name:
             raise wandb.Error("define_metric() requires non-empty name argument")
         for k in kwargs:
-            wandb.termwarn("Unhandled define_metric() arg: {}".format(k))
+            wandb.termwarn(f"Unhandled define_metric() arg: {k}")
         if isinstance(step_metric, wandb_metric.Metric):
             step_metric = step_metric.name
         for arg_name, arg_val, exp_type in (
@@ -2075,7 +2073,7 @@ class Run:
             for i in summary_items:
                 if i not in valid:
                     raise wandb.Error(
-                        "Unhandled define_metric() arg: summary op: {}".format(i)
+                        f"Unhandled define_metric() arg: summary op: {i}"
                     )
                 summary_ops.append(i)
         goal_cleaned: Optional[str] = None
@@ -2084,7 +2082,7 @@ class Run:
             valid_goal = {"min", "max"}
             if goal_cleaned not in valid_goal:
                 raise wandb.Error(
-                    "Unhandled define_metric() arg: goal: {}".format(goal)
+                    f"Unhandled define_metric() arg: goal: {goal}"
                 )
         m = wandb_metric.Metric(
             name=name,
@@ -2539,7 +2537,7 @@ class Run:
         aliases = aliases or ["latest"]
         if isinstance(artifact_or_path, str):
             if name is None:
-                name = "run-%s-%s" % (self._run_id, os.path.basename(artifact_or_path))
+                name = f"run-{self._run_id}-{os.path.basename(artifact_or_path)}"
             artifact = wandb.Artifact(name, type)
             if os.path.isfile(artifact_or_path):
                 artifact.add_file(artifact_or_path)
@@ -2910,7 +2908,7 @@ class Run:
 
         megabyte = wandb.util.POW_2_BYTES[2][1]
         total_files = sum(
-            [
+            
                 sum(
                     [
                         response.file_counts.wandb_count,
@@ -2921,21 +2919,21 @@ class Run:
                 )
                 for response in poll_exit_responses
                 if response and response.file_counts
-            ]
+            
         )
         uploaded = sum(
-            [
+            
                 response.pusher_stats.uploaded_bytes
                 for response in poll_exit_responses
                 if response and response.pusher_stats
-            ]
+            
         )
         total = sum(
-            [
+            
                 response.pusher_stats.total_bytes
                 for response in poll_exit_responses
                 if response and response.pusher_stats
-            ]
+            
         )
 
         line = f"Processing {len(poll_exit_responses)} runs with {total_files} files ({uploaded/megabyte :.2f} MB/{total/megabyte :.2f} MB)\r"
@@ -3035,7 +3033,7 @@ class Run:
 
             history_rows = []
             for key, values in sorted(sampled_history.items()):
-                if any((not isinstance(value, numbers.Number) for value in values)):
+                if any(not isinstance(value, numbers.Number) for value in values):
                     continue
                 sparkline = printer.sparklines(values)
                 if sparkline:
@@ -3207,7 +3205,7 @@ def restore(
         root = os.getcwd()
     path = os.path.join(root, name)
     if os.path.exists(path) and replace is False:
-        return open(path, "r")
+        return open(path)
     if is_disabled:
         return None
     files = api_run.files([name])
@@ -3215,7 +3213,7 @@ def restore(
         return None
     # if the file does not exist, the file has an md5 of 0
     if files[0].md5 == "0":
-        raise ValueError("File {} not found in {}.".format(name, run_path or root))
+        raise ValueError(f"File {name} not found in {run_path or root}.")
     return files[0].download(root=root, replace=True)
 
 

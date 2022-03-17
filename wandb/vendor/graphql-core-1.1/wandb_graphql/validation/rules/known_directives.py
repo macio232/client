@@ -32,11 +32,11 @@ class KnownDirectives(ValidationRule):
 
     @staticmethod
     def unknown_directive_message(directive_name):
-        return 'Unknown directive "{}".'.format(directive_name)
+        return f'Unknown directive "{directive_name}".'
 
     @staticmethod
     def misplaced_directive_message(directive_name, location):
-        return 'Directive "{}" may not be used on "{}".'.format(directive_name, location)
+        return f'Directive "{directive_name}" may not be used on "{location}".'
 
 
 _operation_definition_map = {

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.formatters.other
     ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -105,22 +104,22 @@ class RawTokenFormatter(Formatter):
 
         if self.error_color:
             for ttype, value in tokensource:
-                line = "%s\t%r\n" % (ttype, value)
+                line = f"{ttype}\t{value!r}\n"
                 if ttype is Token.Error:
                     write(colorize(self.error_color, line))
                 else:
                     write(line)
         else:
             for ttype, value in tokensource:
-                write("%s\t%r\n" % (ttype, value))
+                write(f"{ttype}\t{value!r}\n")
         flush()
 
-TESTCASE_BEFORE = u'''\
+TESTCASE_BEFORE = '''\
     def testNeedsName(self):
         fragment = %r
         tokens = [
 '''
-TESTCASE_AFTER = u'''\
+TESTCASE_AFTER = '''\
         ]
         self.assertEqual(tokens, list(self.lexer.get_tokens(fragment)))
 '''
@@ -146,10 +145,10 @@ class TestcaseFormatter(Formatter):
         outbuf = []
         for ttype, value in tokensource:
             rawbuf.append(value)
-            outbuf.append('%s(%s, %r),\n' % (indentation, ttype, value))
+            outbuf.append(f'{indentation}({ttype}, {value!r}),\n')
 
-        before = TESTCASE_BEFORE % (u''.join(rawbuf),)
-        during = u''.join(outbuf)
+        before = TESTCASE_BEFORE % (''.join(rawbuf),)
+        during = ''.join(outbuf)
         after = TESTCASE_AFTER
         if self.encoding is None:
             outfile.write(before + during + after)

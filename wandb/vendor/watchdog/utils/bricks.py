@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -237,8 +236,8 @@ if sys.version_info >= (2, 6, 0):
 
         def __repr__(self):
             if not self:
-                return '%s()' % (self.__class__.__name__,)
-            return '%s(%r)' % (self.__class__.__name__, list(self))
+                return f'{self.__class__.__name__}()'
+            return f'{self.__class__.__name__}({list(self)!r})'
 
         def __eq__(self, other):
             if isinstance(other, OrderedSet):

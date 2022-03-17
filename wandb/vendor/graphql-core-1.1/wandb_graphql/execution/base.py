@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from ..error import GraphQLError
 from ..language import ast
 from ..pyutils.default_ordered_dict import DefaultOrderedDict
@@ -12,7 +11,7 @@ from .values import get_argument_values, get_variable_values
 Undefined = object()
 
 
-class ExecutionContext(object):
+class ExecutionContext:
     """Data that must be available at all points during query execution.
 
     Namely, schema of the type system that is currently executing,
@@ -42,13 +41,13 @@ class ExecutionContext(object):
 
             else:
                 raise GraphQLError(
-                    u'GraphQL cannot execute a request containing a {}.'.format(definition.__class__.__name__),
+                    f'GraphQL cannot execute a request containing a {definition.__class__.__name__}.',
                     definition
                 )
 
         if not operation:
             if operation_name:
-                raise GraphQLError(u'Unknown operation named "{}".'.format(operation_name))
+                raise GraphQLError(f'Unknown operation named "{operation_name}".')
 
             else:
                 raise GraphQLError('Must provide an operation.')
@@ -98,7 +97,7 @@ class ExecutionContext(object):
         return self._subfields_cache[k]
 
 
-class ExecutionResult(object):
+class ExecutionResult:
     """The result of execution. `data` is the result of executing the
     query, `errors` is null if no errors occurred, and is a
     non-empty array if an error occurred."""
@@ -267,7 +266,7 @@ def get_field_entry_key(node):
     return node.name.value
 
 
-class ResolveInfo(object):
+class ResolveInfo:
     __slots__ = ('field_name', 'field_asts', 'return_type', 'parent_type',
                  'schema', 'fragments', 'root_value', 'operation', 'variable_values')
 

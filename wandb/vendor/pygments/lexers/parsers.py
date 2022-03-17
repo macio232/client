@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.parsers
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -222,7 +221,7 @@ class RagelRubyLexer(DelegatingLexer):
     filenames = ['*.rl']
 
     def __init__(self, **options):
-        super(RagelRubyLexer, self).__init__(RubyLexer, RagelEmbeddedLexer,
+        super().__init__(RubyLexer, RagelEmbeddedLexer,
                                              **options)
 
     def analyse_text(text):
@@ -241,7 +240,7 @@ class RagelCLexer(DelegatingLexer):
     filenames = ['*.rl']
 
     def __init__(self, **options):
-        super(RagelCLexer, self).__init__(CLexer, RagelEmbeddedLexer,
+        super().__init__(CLexer, RagelEmbeddedLexer,
                                           **options)
 
     def analyse_text(text):
@@ -260,7 +259,7 @@ class RagelDLexer(DelegatingLexer):
     filenames = ['*.rl']
 
     def __init__(self, **options):
-        super(RagelDLexer, self).__init__(DLexer, RagelEmbeddedLexer, **options)
+        super().__init__(DLexer, RagelEmbeddedLexer, **options)
 
     def analyse_text(text):
         return '@LANG: d' in text
@@ -278,7 +277,7 @@ class RagelCppLexer(DelegatingLexer):
     filenames = ['*.rl']
 
     def __init__(self, **options):
-        super(RagelCppLexer, self).__init__(CppLexer, RagelEmbeddedLexer, **options)
+        super().__init__(CppLexer, RagelEmbeddedLexer, **options)
 
     def analyse_text(text):
         return '@LANG: c++' in text
@@ -296,7 +295,7 @@ class RagelObjectiveCLexer(DelegatingLexer):
     filenames = ['*.rl']
 
     def __init__(self, **options):
-        super(RagelObjectiveCLexer, self).__init__(ObjectiveCLexer,
+        super().__init__(ObjectiveCLexer,
                                                    RagelEmbeddedLexer,
                                                    **options)
 
@@ -316,7 +315,7 @@ class RagelJavaLexer(DelegatingLexer):
     filenames = ['*.rl']
 
     def __init__(self, **options):
-        super(RagelJavaLexer, self).__init__(JavaLexer, RagelEmbeddedLexer,
+        super().__init__(JavaLexer, RagelEmbeddedLexer,
                                              **options)
 
     def analyse_text(text):
@@ -364,13 +363,13 @@ class AntlrLexer(RegexLexer):
             # tokensSpec
             (r'tokens\b', Keyword, 'tokens'),
             # attrScope
-            (r'(scope)(\s*)(' + _id + ')(\s*)(\{)',
+            (r'(scope)(\s*)(' + _id + r')(\s*)(\{)',
              bygroups(Keyword, Whitespace, Name.Variable, Whitespace,
                       Punctuation), 'action'),
             # exception
             (r'(catch|finally)\b', Keyword, 'exception'),
             # action
-            (r'(@' + _id + ')(\s*)(::)?(\s*)(' + _id + ')(\s*)(\{)',
+            (r'(@' + _id + r')(\s*)(::)?(\s*)(' + _id + r')(\s*)(\{)',
              bygroups(Name.Label, Whitespace, Punctuation, Whitespace,
                       Name.Label, Whitespace, Punctuation), 'action'),
             # rule
@@ -405,10 +404,10 @@ class AntlrLexer(RegexLexer):
             # L173 ANTLRv3.g from ANTLR book
             (r'(scope)(\s+)(\{)', bygroups(Keyword, Whitespace, Punctuation),
              'action'),
-            (r'(scope)(\s+)(' + _id + ')(\s*)(;)',
+            (r'(scope)(\s+)(' + _id + r')(\s*)(;)',
              bygroups(Keyword, Whitespace, Name.Label, Whitespace, Punctuation)),
             # ruleAction
-            (r'(@' + _id + ')(\s*)(\{)',
+            (r'(@' + _id + r')(\s*)(\{)',
              bygroups(Name.Label, Whitespace, Punctuation), 'action'),
             # finished prelims, go to rule alts!
             (r':', Punctuation, '#pop')
@@ -442,7 +441,7 @@ class AntlrLexer(RegexLexer):
             include('comments'),
             (r'\{', Punctuation),
             (r'(' + _TOKEN_REF + r')(\s*)(=)?(\s*)(' + _STRING_LITERAL
-             + ')?(\s*)(;)',
+             + r')?(\s*)(;)',
              bygroups(Name.Label, Whitespace, Punctuation, Whitespace,
                       String, Whitespace, Punctuation)),
             (r'\}', Punctuation, '#pop'),
@@ -452,7 +451,7 @@ class AntlrLexer(RegexLexer):
             include('comments'),
             (r'\{', Punctuation),
             (r'(' + _id + r')(\s*)(=)(\s*)(' +
-             '|'.join((_id, _STRING_LITERAL, _INT, '\*')) + ')(\s*)(;)',
+             '|'.join((_id, _STRING_LITERAL, _INT, r'\*')) + r')(\s*)(;)',
              bygroups(Name.Variable, Whitespace, Punctuation, Whitespace,
                       Text, Whitespace, Punctuation)),
             (r'\}', Punctuation, '#pop'),
@@ -552,7 +551,7 @@ class AntlrCppLexer(DelegatingLexer):
     filenames = ['*.G', '*.g']
 
     def __init__(self, **options):
-        super(AntlrCppLexer, self).__init__(CppLexer, AntlrLexer, **options)
+        super().__init__(CppLexer, AntlrLexer, **options)
 
     def analyse_text(text):
         return AntlrLexer.analyse_text(text) and \
@@ -571,7 +570,7 @@ class AntlrObjectiveCLexer(DelegatingLexer):
     filenames = ['*.G', '*.g']
 
     def __init__(self, **options):
-        super(AntlrObjectiveCLexer, self).__init__(ObjectiveCLexer,
+        super().__init__(ObjectiveCLexer,
                                                    AntlrLexer, **options)
 
     def analyse_text(text):
@@ -591,7 +590,7 @@ class AntlrCSharpLexer(DelegatingLexer):
     filenames = ['*.G', '*.g']
 
     def __init__(self, **options):
-        super(AntlrCSharpLexer, self).__init__(CSharpLexer, AntlrLexer,
+        super().__init__(CSharpLexer, AntlrLexer,
                                                **options)
 
     def analyse_text(text):
@@ -611,7 +610,7 @@ class AntlrPythonLexer(DelegatingLexer):
     filenames = ['*.G', '*.g']
 
     def __init__(self, **options):
-        super(AntlrPythonLexer, self).__init__(PythonLexer, AntlrLexer,
+        super().__init__(PythonLexer, AntlrLexer,
                                                **options)
 
     def analyse_text(text):
@@ -631,7 +630,7 @@ class AntlrJavaLexer(DelegatingLexer):
     filenames = ['*.G', '*.g']
 
     def __init__(self, **options):
-        super(AntlrJavaLexer, self).__init__(JavaLexer, AntlrLexer,
+        super().__init__(JavaLexer, AntlrLexer,
                                              **options)
 
     def analyse_text(text):
@@ -651,7 +650,7 @@ class AntlrRubyLexer(DelegatingLexer):
     filenames = ['*.G', '*.g']
 
     def __init__(self, **options):
-        super(AntlrRubyLexer, self).__init__(RubyLexer, AntlrLexer,
+        super().__init__(RubyLexer, AntlrLexer,
                                              **options)
 
     def analyse_text(text):
@@ -671,7 +670,7 @@ class AntlrPerlLexer(DelegatingLexer):
     filenames = ['*.G', '*.g']
 
     def __init__(self, **options):
-        super(AntlrPerlLexer, self).__init__(PerlLexer, AntlrLexer,
+        super().__init__(PerlLexer, AntlrLexer,
                                              **options)
 
     def analyse_text(text):
@@ -692,7 +691,7 @@ class AntlrActionScriptLexer(DelegatingLexer):
 
     def __init__(self, **options):
         from pygments.lexers.actionscript import ActionScriptLexer
-        super(AntlrActionScriptLexer, self).__init__(ActionScriptLexer,
+        super().__init__(ActionScriptLexer,
                                                      AntlrLexer, **options)
 
     def analyse_text(text):
@@ -781,7 +780,7 @@ class TreetopLexer(DelegatingLexer):
     filenames = ['*.treetop', '*.tt']
 
     def __init__(self, **options):
-        super(TreetopLexer, self).__init__(RubyLexer, TreetopBaseLexer, **options)
+        super().__init__(RubyLexer, TreetopBaseLexer, **options)
 
 
 class EbnfLexer(RegexLexer):

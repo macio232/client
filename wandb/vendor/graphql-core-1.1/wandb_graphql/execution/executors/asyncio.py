@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from asyncio import Future, get_event_loop, iscoroutine, wait
 
 from promise import Promise
@@ -28,7 +26,7 @@ except ImportError:
             raise TypeError('A Future, a coroutine or an awaitable is required')
 
 
-class AsyncioExecutor(object):
+class AsyncioExecutor:
 
     def __init__(self, loop=None):
         if loop is None:

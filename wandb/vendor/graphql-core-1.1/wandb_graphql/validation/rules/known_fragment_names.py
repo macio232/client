@@ -16,4 +16,4 @@ class KnownFragmentNames(ValidationRule):
 
     @staticmethod
     def unknown_fragment_message(fragment_name):
-        return 'Unknown fragment "{}".'.format(fragment_name)
+        return f'Unknown fragment "{fragment_name}".'

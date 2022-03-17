@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.grammar_notation
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -158,7 +157,7 @@ class JsgfLexer(RegexLexer):
             (r'//.*', Comment.Single),
         ],
         'non-comments': [
-            ('\A#JSGF[^;]*', Comment.Preproc),
+            (r'\A#JSGF[^;]*', Comment.Preproc),
             (r'\s+', Text),
             (r';', Punctuation),
             (r'[=|()\[\]*+]', Operator),

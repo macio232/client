@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.formatters.img
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,7 +58,7 @@ class FontNotFound(Exception):
     """When there are no usable fonts specified"""
 
 
-class FontManager(object):
+class FontManager:
     """
     Manages a set of fonts: normal, italic, bold, etc...
     """
@@ -83,7 +82,7 @@ class FontManager(object):
             self._create_nix()
 
     def _get_nix_font_path(self, name, style):
-        proc = subprocess.Popen(['fc-list', "%s:style=%s" % (name, style), 'file'],
+        proc = subprocess.Popen(['fc-list', f"{name}:style={style}", 'file'],
                                 stdout=subprocess.PIPE, stderr=None)
         stdout, _ = proc.communicate()
         if proc.returncode == 0:
@@ -125,8 +124,8 @@ class FontManager(object):
         for font_dir in (os.path.join(os.getenv("HOME"), 'Library/Fonts/'),
                          '/Library/Fonts/', '/System/Library/Fonts/'):
             font_map.update(
-                ((os.path.splitext(f)[0].lower(), os.path.join(font_dir, f))
-                    for f in os.listdir(font_dir) if f.lower().endswith('ttf')))
+                (os.path.splitext(f)[0].lower(), os.path.join(font_dir, f))
+                    for f in os.listdir(font_dir) if f.lower().endswith('ttf'))
 
         for name in STYLES['NORMAL']:
             path = self._get_mac_font_path(font_map, self.font_name, name)
@@ -152,10 +151,10 @@ class FontManager(object):
         for suffix in ('', ' (TrueType)'):
             for style in styles:
                 try:
-                    valname = '%s%s%s' % (basename, style and ' '+style, suffix)
+                    valname = '{}{}{}'.format(basename, style and ' '+style, suffix)
                     val, _ = _winreg.QueryValueEx(key, valname)
                     return val
-                except EnvironmentError:
+                except OSError:
                     continue
         else:
             if fail:
@@ -168,12 +167,12 @@ class FontManager(object):
             key = _winreg.OpenKey(
                 _winreg.HKEY_LOCAL_MACHINE,
                 r'Software\Microsoft\Windows NT\CurrentVersion\Fonts')
-        except EnvironmentError:
+        except OSError:
             try:
                 key = _winreg.OpenKey(
                     _winreg.HKEY_LOCAL_MACHINE,
                     r'Software\Microsoft\Windows\CurrentVersion\Fonts')
-            except EnvironmentError:
+            except OSError:
                 raise FontNotFound('Can\'t open Windows font registry key')
         try:
             path = self._lookup_win(key, self.font_name, STYLES['NORMAL'], True)
@@ -211,7 +210,7 @@ class FontManager(object):
 
 
 class ImageFormatter(Formatter):
-    """
+    r"""
     Create a PNG image from source code. This uses the Python Imaging Library to
     generate a pixmap from the source code.
 

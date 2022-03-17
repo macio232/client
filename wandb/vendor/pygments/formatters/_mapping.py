@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.formatters._mapping
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -13,7 +12,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 FORMATTERS = {
     'BBCodeFormatter': ('pygments.formatters.bbcode', 'BBCode', ('bbcode', 'bb'), (), 'Format tokens with BBcodes. These formatting codes are used by many bulletin boards, so you can highlight your sourcecode with pygments before posting it there.'),
@@ -47,14 +45,14 @@ if __name__ == '__main__':  # pragma: no cover
     for root, dirs, files in os.walk('.'):
         for filename in files:
             if filename.endswith('.py') and not filename.startswith('_'):
-                module_name = 'pygments.formatters%s.%s' % (
+                module_name = 'pygments.formatters{}.{}'.format(
                     root[1:].replace('/', '.'), filename[:-3])
                 print(module_name)
                 module = __import__(module_name, None, None, [''])
                 for formatter_name in module.__all__:
                     formatter = getattr(module, formatter_name)
                     found_formatters.append(
-                        '%r: %r' % (formatter_name,
+                        '{!r}: {!r}'.format(formatter_name,
                                     (module_name,
                                      formatter.name,
                                      tuple(formatter.aliases),

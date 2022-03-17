@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.markup
     ~~~~~~~~~~~~~~~~~~~~~~
@@ -165,12 +164,11 @@ class RstLexer(RegexLexer):
                 code += line[indention_size:]
             else:
                 code += line
-        for item in do_insertions(ins, lexer.get_tokens_unprocessed(code)):
-            yield item
+        yield from do_insertions(ins, lexer.get_tokens_unprocessed(code))
 
     # from docutils.parsers.rst.states
-    closers = u'\'")]}>\u2019\u201d\xbb!?'
-    unicode_delimiters = u'\u2010\u2011\u2012\u2013\u2014\u00a0'
+    closers = '\'")]}>\u2019\u201d\xbb!?'
+    unicode_delimiters = '\u2010\u2011\u2012\u2013\u2014\u00a0'
     end_string_suffix = (r'((?=$)|(?=[-/:.,; \n\x00%s%s]))'
                          % (re.escape(unicode_delimiters),
                             re.escape(closers)))
@@ -463,7 +461,7 @@ class MozPreprocXulLexer(DelegatingLexer):
     mimetypes = []
 
     def __init__(self, **options):
-        super(MozPreprocXulLexer, self).__init__(
+        super().__init__(
             XmlLexer, MozPreprocHashLexer, **options)
 
 
@@ -480,7 +478,7 @@ class MozPreprocJavascriptLexer(DelegatingLexer):
     mimetypes = []
 
     def __init__(self, **options):
-        super(MozPreprocJavascriptLexer, self).__init__(
+        super().__init__(
             JavascriptLexer, MozPreprocHashLexer, **options)
 
 
@@ -497,7 +495,7 @@ class MozPreprocCssLexer(DelegatingLexer):
     mimetypes = []
 
     def __init__(self, **options):
-        super(MozPreprocCssLexer, self).__init__(
+        super().__init__(
             CssLexer, MozPreprocPercentLexer, **options)
 
 
@@ -538,8 +536,7 @@ class MarkdownLexer(RegexLexer):
             yield match.start(4), String, code
             return
 
-        for item in do_insertions([], lexer.get_tokens_unprocessed(code)):
-            yield item
+        yield from do_insertions([], lexer.get_tokens_unprocessed(code))
 
         yield match.start(5), String        , match.group(5)
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.asm
     ~~~~~~~~~~~~~~~~~~~
@@ -35,7 +34,7 @@ class GasLexer(RegexLexer):
     #: optional Comment or Whitespace
     string = r'"(\\"|[^"])*"'
     char = r'[\w$.@-]'
-    identifier = r'(?:[a-zA-Z$_]' + char + '*|\.' + char + '+)'
+    identifier = r'(?:[a-zA-Z$_]' + char + r'*|\.' + char + '+)'
     number = r'(?:0[xX][a-zA-Z0-9]+|\d+)'
 
     tokens = {
@@ -168,7 +167,7 @@ class DObjdumpLexer(DelegatingLexer):
     mimetypes = ['text/x-d-objdump']
 
     def __init__(self, **options):
-        super(DObjdumpLexer, self).__init__(DLexer, ObjdumpLexer, **options)
+        super().__init__(DLexer, ObjdumpLexer, **options)
 
 
 class CppObjdumpLexer(DelegatingLexer):
@@ -181,7 +180,7 @@ class CppObjdumpLexer(DelegatingLexer):
     mimetypes = ['text/x-cpp-objdump']
 
     def __init__(self, **options):
-        super(CppObjdumpLexer, self).__init__(CppLexer, ObjdumpLexer, **options)
+        super().__init__(CppLexer, ObjdumpLexer, **options)
 
 
 class CObjdumpLexer(DelegatingLexer):
@@ -194,7 +193,7 @@ class CObjdumpLexer(DelegatingLexer):
     mimetypes = ['text/x-c-objdump']
 
     def __init__(self, **options):
-        super(CObjdumpLexer, self).__init__(CLexer, ObjdumpLexer, **options)
+        super().__init__(CLexer, ObjdumpLexer, **options)
 
 
 class HsailLexer(RegexLexer):
@@ -256,7 +255,7 @@ class HsailLexer(RegexLexer):
             (r'0[xX][a-fA-F0-9]+', Number.Hex),
             (ieeefloat, Number.Float),
             (float, Number.Float),
-            ('\d+', Number.Integer),
+            (r'\d+', Number.Integer),
 
             (r'[=<>{}\[\]()*.,:;!]|x\b', Punctuation)
         ],
@@ -350,7 +349,7 @@ class LlvmLexer(RegexLexer):
             include('whitespace'),
 
             # Before keywords, because keywords are valid label names :(...
-            (identifier + '\s*:', Name.Label),
+            (identifier + r'\s*:', Name.Label),
 
             include('keyword'),
 
@@ -559,7 +558,7 @@ class TasmLexer(RegexLexer):
             include('whitespace'),
             (identifier + ':', Name.Label),
             (directives, Keyword, 'instruction-args'),
-            (r'(%s)(\s+)(%s)' % (identifier, datatype),
+            (fr'({identifier})(\s+)({datatype})',
                 bygroups(Name.Constant, Keyword.Declaration, Keyword.Declaration),
                 'instruction-args'),
             (declkw, Keyword.Declaration, 'instruction-args'),

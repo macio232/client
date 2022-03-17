@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -67,7 +66,6 @@ Some extremely useful articles and documentation:
 
 """
 
-from __future__ import with_statement
 
 import os
 import threading

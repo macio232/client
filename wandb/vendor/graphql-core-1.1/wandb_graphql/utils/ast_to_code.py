@@ -12,7 +12,7 @@ def ast_to_code(ast, indent=0):
         code.append(('    ' * indent) + line)
 
     if isinstance(ast, Node):
-        append('ast.{}('.format(ast.__class__.__name__))
+        append(f'ast.{ast.__class__.__name__}(')
         indent += 1
         for i, k in enumerate(ast._fields, 1):
             v = getattr(ast, k)
@@ -21,13 +21,13 @@ def ast_to_code(ast, indent=0):
                 ast_to_code(v, indent),
             ))
         if ast.loc:
-            append('loc={}'.format(ast_to_code(ast.loc, indent)))
+            append(f'loc={ast_to_code(ast.loc, indent)}')
 
         indent -= 1
         append(')')
 
     elif isinstance(ast, Loc):
-        append('loc({}, {})'.format(ast.start, ast.end))
+        append(f'loc({ast.start}, {ast.end})')
 
     elif isinstance(ast, list):
         if ast:

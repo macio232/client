@@ -52,7 +52,7 @@ def complete_list_value(inner_resolver, exe_context, info, on_error, result):
 def complete_nonnull_value(exe_context, info, result):
     if result is None:
         raise GraphQLError(
-            'Cannot return null for non-nullable field {}.{}.'.format(info.parent_type, info.field_name),
+            f'Cannot return null for non-nullable field {info.parent_type}.{info.field_name}.',
             info.field_asts
         )
     return result

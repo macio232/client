@@ -96,7 +96,7 @@ def is_tfevents_file_created_by(path: str, hostname: str, start_time: float) -> 
     return created_time >= int(start_time)  # noqa: W503
 
 
-class TBWatcher(object):
+class TBWatcher:
     _logdirs: "Dict[str, TBDirWatcher]"
     _watcher_queue: "PriorityQueue"
 
@@ -166,15 +166,15 @@ class TBWatcher(object):
         tbdir_watcher.start()
 
     def finish(self) -> None:
-        for tbdirwatcher in six.itervalues(self._logdirs):
+        for tbdirwatcher in self._logdirs.values():
             tbdirwatcher.shutdown()
-        for tbdirwatcher in six.itervalues(self._logdirs):
+        for tbdirwatcher in self._logdirs.values():
             tbdirwatcher.finish()
         if self._consumer:
             self._consumer.finish()
 
 
-class TBDirWatcher(object):
+class TBDirWatcher:
     def __init__(
         self,
         tbwatcher: "TBWatcher",
@@ -234,7 +234,7 @@ class TBDirWatcher(object):
 
         class EventFileLoader(event_file_loader.EventFileLoader):
             def __init__(self, file_path: str) -> None:
-                super(EventFileLoader, self).__init__(file_path)
+                super().__init__(file_path)
                 if save:
                     if REMOTE_FILE_TOKEN in file_path:
                         logger.warning(
@@ -311,7 +311,7 @@ class TBDirWatcher(object):
         self._thread.join()
 
 
-class Event(object):
+class Event:
     """An event wrapper to enable priority queueing"""
 
     def __init__(self, event: "ProtoEvent", namespace: "Optional[str]"):
@@ -325,7 +325,7 @@ class Event(object):
         return False
 
 
-class TBEventConsumer(object):
+class TBEventConsumer:
     """Consumes tfevents from a priority queue.  There should always
     only be one of these per run_manager.  We wait for 10 seconds of queued
     events to reduce the chance of multiple tfevent files triggering
@@ -440,7 +440,7 @@ class TBEventConsumer(object):
         )
 
 
-class TBHistory(object):
+class TBHistory:
     _data: "HistoryDict"
     _added: "List[HistoryDict]"
 

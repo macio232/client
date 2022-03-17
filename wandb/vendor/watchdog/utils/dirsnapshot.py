@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -50,7 +49,7 @@ from stat import S_ISDIR
 from watchdog.utils import stat as default_stat
 
 
-class DirectorySnapshotDiff(object):
+class DirectorySnapshotDiff:
     """
     Compares two directory snapshots and creates an object that represents
     the difference between the two snapshots.
@@ -171,7 +170,7 @@ class DirectorySnapshotDiff(object):
         """
         return self._dirs_created
 
-class DirectorySnapshot(object):
+class DirectorySnapshot:
     """
     A snapshot of stat information of files in a directory.
 
@@ -224,13 +223,11 @@ class DirectorySnapshot(object):
                     entries.append((p, stat(p)))
                 except OSError:
                     continue
-            for _ in entries:
-                yield _
+            yield from entries
             if recursive:
                 for path, st in entries:
                     if S_ISDIR(st.st_mode):
-                        for _ in walk(path):
-                            yield _
+                        yield from walk(path)
 
         for p, st in walk(path):
             i = (st.st_ino, st.st_dev)

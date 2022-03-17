@@ -13,7 +13,7 @@ from .definition import (GraphQLArgument, GraphQLField,
 class GraphQLTypeMap(OrderedDict):
 
     def __init__(self, types):
-        super(GraphQLTypeMap, self).__init__()
+        super().__init__()
         self.update(reduce(self.reducer, types, OrderedDict()))
         self._possible_type_map = defaultdict(set)
 
@@ -82,21 +82,21 @@ class GraphQLTypeMap(OrderedDict):
             for field_name, field in field_map.items():
                 if type_is_input:
                     assert isinstance(field, GraphQLInputObjectField), (
-                        '{}.{} must be an instance of GraphQLInputObjectField.'.format(type, field_name)
+                        f'{type}.{field_name} must be an instance of GraphQLInputObjectField.'
                     )
                     assert is_input_type(field.type), (
-                        '{}.{} field type must be Input Type but got: {}.'.format(type, field_name, field.type)
+                        f'{type}.{field_name} field type must be Input Type but got: {field.type}.'
                     )
                 else:
                     assert isinstance(field, (GraphQLField, GraphQLField)), (
-                        '{}.{} must be an instance of GraphQLField.'.format(type, field_name)
+                        f'{type}.{field_name} must be an instance of GraphQLField.'
                     )
                     assert is_output_type(field.type), (
-                        '{}.{} field type must be Output Type but got: {}.'.format(type, field_name, field.type)
+                        f'{type}.{field_name} field type must be Output Type but got: {field.type}.'
                     )
                     for arg_name, arg in field.args.items():
                         assert isinstance(arg, (GraphQLArgument, GraphQLArgument)), (
-                            '{}.{}({}:) argument must be an instance of GraphQLArgument.'.format(type, field_name, arg_name)
+                            f'{type}.{field_name}({arg_name}:) argument must be an instance of GraphQLArgument.'
                         )
                         assert is_input_type(arg.type), (
                             '{}.{}({}:) argument type must be Input Type but got: {}.'.format(type, field_name, arg_name,

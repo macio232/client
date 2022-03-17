@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -34,7 +33,6 @@ Classes
    :special-members:
 """
 
-from __future__ import with_statement
 import os
 import threading
 from functools import partial

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import with_statement
 import os
 import errno
 import struct
@@ -32,7 +30,7 @@ def _load_libc():
     libc_path = None
     try:
         libc_path = ctypes.util.find_library('c')
-    except (OSError, IOError, RuntimeError):
+    except (OSError, RuntimeError):
         # Note: find_library will on some platforms raise these undocumented
         # errors, e.g.on android IOError "No usable temporary directory found"
         # will be raised.
@@ -44,18 +42,18 @@ def _load_libc():
     # Fallbacks
     try:
         return ctypes.CDLL('libc.so')
-    except (OSError, IOError):
+    except OSError:
         pass
 
     try:
         return ctypes.CDLL('libc.so.6')
-    except (OSError, IOError):
+    except OSError:
         pass
 
     # uClibc
     try:
         return ctypes.CDLL('libc.so.0')
-    except (OSError, IOError) as err:
+    except OSError as err:
         raise err
 
 
@@ -76,7 +74,7 @@ inotify_init = ctypes.CFUNCTYPE(c_int, use_errno=True)(
     ("inotify_init", libc))
 
 
-class InotifyConstants(object):
+class InotifyConstants:
     # User-space events
     IN_ACCESS = 0x00000001     # File was accessed.
     IN_MODIFY = 0x00000002     # File was modified.
@@ -169,7 +167,7 @@ DEFAULT_NUM_EVENTS = 2048
 DEFAULT_EVENT_BUFFER_SIZE = DEFAULT_NUM_EVENTS * (EVENT_SIZE + 16)
 
 
-class Inotify(object):
+class Inotify:
     """
     Linux inotify(7) API wrapper class.
 
@@ -442,7 +440,7 @@ class Inotify(object):
             yield wd, mask, cookie, name
 
 
-class InotifyEvent(object):
+class InotifyEvent:
     """
     Inotify event struct wrapper.
 

@@ -14,7 +14,7 @@ def parse(source, **kwargs):
     options.update(kwargs)
     source_obj = source
 
-    if isinstance(source, string_types):
+    if isinstance(source, str):
         source_obj = Source(source)
 
     parser = Parser(source_obj, options)
@@ -26,14 +26,14 @@ def parse_value(source, **kwargs):
     options.update(kwargs)
     source_obj = source
 
-    if isinstance(source, string_types):
+    if isinstance(source, str):
         source_obj = Source(source)
 
     parser = Parser(source_obj, options)
     return parse_value_literal(parser, False)
 
 
-class Parser(object):
+class Parser:
     __slots__ = 'lexer', 'source', 'options', 'prev_end', 'token'
 
     def __init__(self, source, options):
@@ -44,7 +44,7 @@ class Parser(object):
         self.token = self.lexer.next_token()
 
 
-class Loc(object):
+class Loc:
     __slots__ = 'start', 'end', 'source'
 
     def __init__(self, start, end, source=None):
@@ -53,8 +53,8 @@ class Loc(object):
         self.source = source
 
     def __repr__(self):
-        source = ' source={}'.format(self.source) if self.source else ''
-        return '<Loc start={} end={}{}>'.format(self.start, self.end, source)
+        source = f' source={self.source}' if self.source else ''
+        return f'<Loc start={self.start} end={self.end}{source}>'
 
     def __eq__(self, other):
         return (
@@ -112,7 +112,7 @@ def expect(parser, kind):
     raise GraphQLSyntaxError(
         parser.source,
         token.start,
-        u'Expected {}, found {}'.format(
+        'Expected {}, found {}'.format(
             get_token_kind_desc(kind),
             get_token_desc(token)
         )
@@ -131,7 +131,7 @@ def expect_keyword(parser, value):
     raise GraphQLSyntaxError(
         parser.source,
         token.start,
-        u'Expected "{}", found {}'.format(value, get_token_desc(token))
+        f'Expected "{value}", found {get_token_desc(token)}'
     )
 
 
@@ -142,7 +142,7 @@ def unexpected(parser, at_token=None):
     return GraphQLSyntaxError(
         parser.source,
         token.start,
-        u'Unexpected {}'.format(get_token_desc(token))
+        f'Unexpected {get_token_desc(token)}'
     )
 
 

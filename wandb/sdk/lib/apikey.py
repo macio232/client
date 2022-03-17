@@ -1,5 +1,4 @@
 #
-# -*- coding: utf-8 -*-
 """
 apikey util.
 """
@@ -166,7 +165,7 @@ def write_netrc(host, entity, key):
         try:
             with open(path) as f:
                 orig_lines = f.read().strip().split("\n")
-        except IOError:
+        except OSError:
             pass
         with open(path, "w") as f:
             if orig_lines:
@@ -192,7 +191,7 @@ def write_netrc(host, entity, key):
             )
         os.chmod(os.path.expanduser("~/.netrc"), stat.S_IRUSR | stat.S_IWUSR)
         return True
-    except IOError:
+    except OSError:
         wandb.termerror("Unable to read ~/.netrc")
         return None
 

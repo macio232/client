@@ -6,7 +6,7 @@ class UniqueOperationNames(ValidationRule):
     __slots__ = 'known_operation_names',
 
     def __init__(self, context):
-        super(UniqueOperationNames, self).__init__(context)
+        super().__init__(context)
         self.known_operation_names = {}
 
     def enter_OperationDefinition(self, node, key, parent, path, ancestors):
@@ -28,4 +28,4 @@ class UniqueOperationNames(ValidationRule):
 
     @staticmethod
     def duplicate_operation_name_message(operation_name):
-        return 'There can only be one operation named "{}".'.format(operation_name)
+        return f'There can only be one operation named "{operation_name}".'

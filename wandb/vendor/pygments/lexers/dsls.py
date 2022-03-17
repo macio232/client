@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.dsls
     ~~~~~~~~~~~~~~~~~~~~
@@ -66,7 +65,7 @@ class ProtoBufLexer(RegexLexer):
             (r'[+-=]', Operator),
             (r'([a-zA-Z_][\w.]*)([ \t]*)(=)',
              bygroups(Name.Attribute, Text, Operator)),
-            ('[a-zA-Z_][\w.]*', Name),
+            (r'[a-zA-Z_][\w.]*', Name),
         ],
         'package': [
             (r'[a-zA-Z_]\w*', Name.Namespace, '#pop'),
@@ -300,7 +299,7 @@ class PuppetLexer(RegexLexer):
         ],
 
         'names': [
-            ('[a-zA-Z_]\w*', Name.Attribute),
+            (r'[a-zA-Z_]\w*', Name.Attribute),
             (r'(\$\S+)(\[)(\S+)(\])', bygroups(Name.Variable, Punctuation,
                                                String, Punctuation)),
             (r'\$\S+', Name.Variable),
@@ -673,7 +672,7 @@ class CrmshLexer(RegexLexer):
             (sub, Keyword),
             (acl, Keyword),
             # binary operators
-            (r'(?:%s:)?(%s)(?![\w#$-])' % (val_qual, bin_ops), Operator.Word),
+            (fr'(?:{val_qual}:)?({bin_ops})(?![\w#$-])', Operator.Word),
             # other operators
             (bin_rel, Operator.Word),
             (un_ops, Operator.Word),
@@ -853,9 +852,9 @@ class SnowballLexer(ExtendedRegexLexer):
             (words(('size', 'limit', 'cursor', 'maxint', 'minint'),
                    suffix=r'\b'),
              Name.Builtin),
-            (r'(stringdef\b)([%s]*)([^%s]+)' % (_ws, _ws),
+            (fr'(stringdef\b)([{_ws}]*)([^{_ws}]+)',
              bygroups(Keyword.Reserved, Text, String.Escape)),
-            (r'(stringescapes\b)([%s]*)(.)([%s]*)(.)' % (_ws, _ws),
+            (fr'(stringescapes\b)([{_ws}]*)(.)([{_ws}]*)(.)',
              _stringescapes),
             (r'[A-Za-z]\w*', Name),
         ],

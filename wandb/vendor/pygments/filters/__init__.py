@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.filters
     ~~~~~~~~~~~~~~~~
@@ -88,9 +87,8 @@ class CodeTagFilter(Filter):
             if ttype in String.Doc or \
                ttype in Comment and \
                ttype not in Comment.Preproc:
-                for sttype, svalue in _replace_special(ttype, value, regex,
-                                                       Comment.Special):
-                    yield sttype, svalue
+                yield from _replace_special(ttype, value, regex,
+                                                       Comment.Special)
             else:
                 yield ttype, value
 
@@ -229,9 +227,9 @@ class VisibleWhitespaceFilter(Filter):
 
     def __init__(self, **options):
         Filter.__init__(self, **options)
-        for name, default in [('spaces',   u'·'),
-                              ('tabs',     u'»'),
-                              ('newlines', u'¶')]:
+        for name, default in [('spaces',   '·'),
+                              ('tabs',     '»'),
+                              ('newlines', '¶')]:
             opt = options.get(name, False)
             if isinstance(opt, string_types) and len(opt) == 1:
                 setattr(self, name, opt)
@@ -246,9 +244,9 @@ class VisibleWhitespaceFilter(Filter):
 
     def filter(self, lexer, stream):
         if self.wstt:
-            spaces = self.spaces or u' '
-            tabs = self.tabs or u'\t'
-            newlines = self.newlines or u'\n'
+            spaces = self.spaces or ' '
+            tabs = self.tabs or '\t'
+            newlines = self.newlines or '\n'
             regex = re.compile(r'\s')
             def replacefunc(wschar):
                 if wschar == ' ':
@@ -260,9 +258,8 @@ class VisibleWhitespaceFilter(Filter):
                 return wschar
 
             for ttype, value in stream:
-                for sttype, svalue in _replace_special(ttype, value, regex,
-                                                       Whitespace, replacefunc):
-                    yield sttype, svalue
+                yield from _replace_special(ttype, value, regex,
+                                                       Whitespace, replacefunc)
         else:
             spaces, tabs, newlines = self.spaces, self.tabs, self.newlines
             # simpler processing
@@ -298,7 +295,7 @@ class GobbleFilter(Filter):
         if left < len(value):
             return value[left:], 0
         else:
-            return u'', left - len(value)
+            return '', left - len(value)
 
     def filter(self, lexer, stream):
         n = self.n
@@ -309,7 +306,7 @@ class GobbleFilter(Filter):
             (parts[0], left) = self.gobble(parts[0], left)
             for i in range(1, len(parts)):
                 (parts[i], left) = self.gobble(parts[i], n)
-            value = u'\n'.join(parts)
+            value = '\n'.join(parts)
 
             if value != '':
                 yield ttype, value

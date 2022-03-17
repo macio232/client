@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers._php_builtins
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,7 +15,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 MODULES = {'.NET': ('dotnet_load',),
  'APC': ('apc_add',
@@ -4688,7 +4686,7 @@ if __name__ == '__main__':  # pragma: no cover
     PHP_MANUAL_URL     = 'http://us3.php.net/distributions/manual/php_manual_en.tar.gz'
     PHP_MANUAL_DIR     = './php-chunked-xhtml/'
     PHP_REFERENCE_GLOB = 'ref.*'
-    PHP_FUNCTION_RE    = '<a href="function\..*?\.html">(.*?)</a>'
+    PHP_FUNCTION_RE    = r'<a href="function\..*?\.html">(.*?)</a>'
     PHP_MODULE_RE      = '<title>(.*?) Functions</title>'
 
     def get_php_functions():
@@ -4729,8 +4727,7 @@ if __name__ == '__main__':  # pragma: no cover
         tar = tarfile.open(download[0])
         tar.extractall()
         tar.close()
-        for file in glob.glob("%s%s" % (PHP_MANUAL_DIR, PHP_REFERENCE_GLOB)):
-            yield file
+        yield from glob.glob(f"{PHP_MANUAL_DIR}{PHP_REFERENCE_GLOB}")
         os.remove(download[0])
 
     def regenerate(filename, modules):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.matlab
     ~~~~~~~~~~~~~~~~~~~~~~
@@ -134,9 +133,9 @@ class MatlabLexer(RegexLexer):
     }
 
     def analyse_text(text):
-        if re.match('^\s*%', text, re.M):  # comment
+        if re.match(r'^\s*%', text, re.M):  # comment
             return 0.2
-        elif re.match('^!\w+', text, re.M):  # system cmd
+        elif re.match(r'^!\w+', text, re.M):  # system cmd
             return 0.2
 
 
@@ -183,18 +182,16 @@ class MatlabSessionLexer(Lexer):
 
             else:
                 if curcode:
-                    for item in do_insertions(
-                            insertions, mlexer.get_tokens_unprocessed(curcode)):
-                        yield item
+                    yield from do_insertions(
+                            insertions, mlexer.get_tokens_unprocessed(curcode))
                     curcode = ''
                     insertions = []
 
                 yield match.start(), Generic.Output, line
 
         if curcode:  # or item:
-            for item in do_insertions(
-                    insertions, mlexer.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(
+                    insertions, mlexer.get_tokens_unprocessed(curcode))
 
 
 class OctaveLexer(RegexLexer):

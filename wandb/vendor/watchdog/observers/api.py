@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -16,7 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import with_statement
 import threading
 from watchdog.utils import BaseThread
 from watchdog.utils.compat import queue
@@ -36,7 +34,7 @@ class EventQueue(SkipRepeatsQueue):
     """
 
 
-class ObservedWatch(object):
+class ObservedWatch:
     """An scheduled watch.
 
     :param path:
@@ -73,7 +71,7 @@ class ObservedWatch(object):
         return hash(self.key)
 
     def __repr__(self):
-        return "<ObservedWatch: path=%s, is_recursive=%s>" % (
+        return "<ObservedWatch: path={}, is_recursive={}>".format(
             self.path, self.is_recursive)
 
 
@@ -253,7 +251,7 @@ class BaseObserver(EventDispatcher):
     def start(self):
         for emitter in self._emitters:
             emitter.start()
-        super(BaseObserver, self).start()
+        super().start()
 
     def schedule(self, event_handler, path, recursive=False):
         """

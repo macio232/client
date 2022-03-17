@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # echo.py: Tracing function calls using Python decorators.
 #
 # Written by Thomas Guest <tag@wordaligned.org>
@@ -67,7 +66,7 @@ def method_name(method):
     """
     mname = name(method)
     if is_class_private_name(mname):
-        mname = "_%s%s" % (name(method.__self__.__class__), mname)
+        mname = f"_{name(method.__self__.__class__)}{mname}"
     return mname
 
 
@@ -78,7 +77,7 @@ def format_arg_value(arg_val):
     'x=(1, 2, 3)'
     """
     arg, val = arg_val
-    return "%s=%r" % (arg, val)
+    return f"{arg}={val!r}"
 
 
 def echo(fn, write=sys.stdout.write):
@@ -106,7 +105,7 @@ def echo(fn, write=sys.stdout.write):
         nameless = list(map(repr, v[argcount:]))
         keyword = list(map(format_arg_value, list(k.items())))
         args = positional + defaulted + nameless + keyword
-        write("%s(%s)\n" % (name(fn), ", ".join(args)))
+        write("{}({})\n".format(name(fn), ", ".join(args)))
         return fn(*v, **k)
 
     return wrapped

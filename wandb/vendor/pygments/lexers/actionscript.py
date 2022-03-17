@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.actionscript
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,7 +124,7 @@ class ActionScript3Lexer(RegexLexer):
                  'text/actionscript3']
 
     identifier = r'[$a-zA-Z_]\w*'
-    typeidentifier = identifier + '(?:\.<\w+>)?'
+    typeidentifier = identifier + r'(?:\.<\w+>)?'
 
     flags = re.DOTALL | re.MULTILINE
     tokens = {
@@ -232,7 +231,7 @@ class MxmlLexer(RegexLexer):
             (r'/?\s*>', Name.Tag, '#pop'),
         ],
         'attr': [
-            ('\s+', Text),
+            (r'\s+', Text),
             ('".*?"', String, '#pop'),
             ("'.*?'", String, '#pop'),
             (r'[^\s>]+', String, '#pop'),

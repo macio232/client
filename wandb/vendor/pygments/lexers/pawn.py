@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.pawn
     ~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +35,7 @@ class SourcePawnLexer(RegexLexer):
     tokens = {
         'root': [
             # preprocessor directives: without whitespace
-            ('^#if\s+0', Comment.Preproc, 'if0'),
+            (r'^#if\s+0', Comment.Preproc, 'if0'),
             ('^#', Comment.Preproc, 'macro'),
             # or with whitespace
             ('^' + _ws1 + r'#if\s+0', Comment.Preproc, 'if0'),
@@ -62,7 +61,7 @@ class SourcePawnLexer(RegexLexer):
              r'public|return|sizeof|static|decl|struct|switch)\b', Keyword),
             (r'(bool|Float)\b', Keyword.Type),
             (r'(true|false)\b', Keyword.Constant),
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
         ],
         'string': [
             (r'"', String, '#pop'),
@@ -86,7 +85,7 @@ class SourcePawnLexer(RegexLexer):
         ]
     }
 
-    SM_TYPES = set(('Action', 'bool', 'Float', 'Plugin', 'String', 'any',
+    SM_TYPES = {'Action', 'bool', 'Float', 'Plugin', 'String', 'any',
                     'AdminFlag', 'OverrideType', 'OverrideRule', 'ImmunityType',
                     'GroupId', 'AdminId', 'AdmAccessMode', 'AdminCachePart',
                     'CookieAccess', 'CookieMenu', 'CookieMenuAction', 'NetFlow',
@@ -104,7 +103,7 @@ class SourcePawnLexer(RegexLexer):
                     'SortFunc2D', 'APLRes', 'FeatureType', 'FeatureStatus',
                     'SMCResult', 'SMCError', 'TFClassType', 'TFTeam', 'TFCond',
                     'TFResourceType', 'Timer', 'TopMenuAction', 'TopMenuObjectType',
-                    'TopMenuPosition', 'TopMenuObject', 'UserMsg'))
+                    'TopMenuPosition', 'TopMenuObject', 'UserMsg'}
 
     def __init__(self, **options):
         self.smhighlighting = get_bool_opt(options,
@@ -148,7 +147,7 @@ class PawnLexer(RegexLexer):
     tokens = {
         'root': [
             # preprocessor directives: without whitespace
-            ('^#if\s+0', Comment.Preproc, 'if0'),
+            (r'^#if\s+0', Comment.Preproc, 'if0'),
             ('^#', Comment.Preproc, 'macro'),
             # or with whitespace
             ('^' + _ws1 + r'#if\s+0', Comment.Preproc, 'if0'),
@@ -174,7 +173,7 @@ class PawnLexer(RegexLexer):
              r'public|return|sizeof|tagof|state|goto)\b', Keyword),
             (r'(bool|Float)\b', Keyword.Type),
             (r'(true|false)\b', Keyword.Constant),
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
         ],
         'string': [
             (r'"', String, '#pop'),

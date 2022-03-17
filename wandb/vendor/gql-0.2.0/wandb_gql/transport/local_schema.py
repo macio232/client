@@ -1,7 +1,7 @@
 from wandb_graphql.execution import execute
 
 
-class LocalSchemaTransport(object):
+class LocalSchemaTransport:
 
     def __init__(self, schema):
         self.schema = schema

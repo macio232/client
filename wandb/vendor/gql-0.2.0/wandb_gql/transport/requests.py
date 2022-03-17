@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import requests
 from wandb_graphql.execution import ExecutionResult
 from wandb_graphql.language.printer import print_ast
@@ -15,7 +13,7 @@ class RequestsHTTPTransport(HTTPTransport):
         :param use_json: Send request body as JSON instead of form-urlencoded
         :param timeout: Specifies a default timeout for requests (Default: None)
         """
-        super(RequestsHTTPTransport, self).__init__(url, **kwargs)
+        super().__init__(url, **kwargs)
         self.auth = auth
         self.default_timeout = timeout
         self.use_json = use_json
@@ -39,7 +37,7 @@ class RequestsHTTPTransport(HTTPTransport):
         request.raise_for_status()
 
         result = request.json()
-        assert 'errors' in result or 'data' in result, 'Received non-compatible response "{}"'.format(result)
+        assert 'errors' in result or 'data' in result, f'Received non-compatible response "{result}"'
         return ExecutionResult(
             errors=result.get('errors'),
             data=result.get('data')

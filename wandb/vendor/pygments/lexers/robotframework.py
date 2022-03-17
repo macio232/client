@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.robotframework
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,7 +83,7 @@ class RobotFrameworkLexer(Lexer):
                         index += len(value)
 
 
-class VariableTokenizer(object):
+class VariableTokenizer:
 
     def tokenize(self, string, token):
         var = VariableSplitter(string, identifiers='$@%&')
@@ -99,19 +98,16 @@ class VariableTokenizer(object):
         before = string[:var.start]
         yield before, orig_token
         yield var.identifier + '{', SYNTAX
-        for value, token in self.tokenize(var.base, VARIABLE):
-            yield value, token
+        yield from self.tokenize(var.base, VARIABLE)
         yield '}', SYNTAX
         if var.index:
             yield '[', SYNTAX
-            for value, token in self.tokenize(var.index, VARIABLE):
-                yield value, token
+            yield from self.tokenize(var.index, VARIABLE)
             yield ']', SYNTAX
-        for value, token in self.tokenize(string[var.end:], orig_token):
-            yield value, token
+        yield from self.tokenize(string[var.end:], orig_token)
 
 
-class RowTokenizer(object):
+class RowTokenizer:
 
     def __init__(self):
         self._table = UnknownTable()
@@ -159,21 +155,19 @@ class RowTokenizer(object):
                 yield value, token
 
 
-class RowSplitter(object):
+class RowSplitter:
     _space_splitter = re.compile('( {2,})')
-    _pipe_splitter = re.compile('((?:^| +)\|(?: +|$))')
+    _pipe_splitter = re.compile(r'((?:^| +)\|(?: +|$))')
 
     def split(self, row):
         splitter = (row.startswith('| ') and self._split_from_pipes
                     or self._split_from_spaces)
-        for value in splitter(row):
-            yield value
+        yield from splitter(row)
         yield '\n'
 
     def _split_from_spaces(self, row):
         yield ''  # Start with (pseudo)separator similarly as with pipes
-        for value in self._space_splitter.split(row):
-            yield value
+        yield from self._space_splitter.split(row)
 
     def _split_from_pipes(self, row):
         _, separator, rest = self._pipe_splitter.split(row, 1)
@@ -185,7 +179,7 @@ class RowSplitter(object):
         yield rest
 
 
-class Tokenizer(object):
+class Tokenizer:
     _tokens = None
 
     def __init__(self):
@@ -292,7 +286,7 @@ class KeywordCall(Tokenizer):
         return GherkinTokenizer().tokenize(value, KEYWORD)
 
 
-class GherkinTokenizer(object):
+class GherkinTokenizer:
     _gherkin_prefix = re.compile('^(Given|When|Then|And) ', re.IGNORECASE)
 
     def tokenize(self, value, token):
@@ -320,7 +314,7 @@ class ForLoop(Tokenizer):
         return token
 
 
-class _Table(object):
+class _Table:
     _tokenizer_class = None
 
     def __init__(self, prev_tokenizer=None):
@@ -333,8 +327,7 @@ class _Table(object):
             self._tokenizer = self._prev_tokenizer
             yield value, SYNTAX
         else:
-            for value_and_token in self._tokenize(value, index):
-                yield value_and_token
+            yield from self._tokenize(value, index)
         self._prev_values_on_row.append(value)
 
     def _continues(self, value, index):

@@ -6,7 +6,7 @@ from promise import Promise
 from .utils import process
 
 
-class ThreadExecutor(object):
+class ThreadExecutor:
 
     pool = None
 

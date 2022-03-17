@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.formatters.html
     ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -9,7 +8,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 import os
 import sys
@@ -29,11 +27,11 @@ __all__ = ['HtmlFormatter']
 
 
 _escape_html_table = {
-    ord('&'): u'&amp;',
-    ord('<'): u'&lt;',
-    ord('>'): u'&gt;',
-    ord('"'): u'&quot;',
-    ord("'"): u'&#39;',
+    ord('&'): '&amp;',
+    ord('<'): '&lt;',
+    ord('>'): '&gt;',
+    ord('"'): '&quot;',
+    ord("'"): '&#39;',
 }
 
 
@@ -493,7 +491,7 @@ class HtmlFormatter(Formatter):
                   for cls, (style, ttype, level) in iteritems(self.class2style)
                   if cls and style]
         styles.sort()
-        lines = ['%s { %s } /* %s */' % (prefix(cls), style, repr(ttype)[6:])
+        lines = [f'{prefix(cls)} {{ {style} }} /* {repr(ttype)[6:]} */'
                  for (level, ttype, cls, style) in styles]
         if arg and not self.nobackground and \
            self.style.background_color is not None:
@@ -539,7 +537,7 @@ class HtmlFormatter(Formatter):
                     cf.write(CSSFILE_TEMPLATE %
                              {'styledefs': self.get_style_defs('body')})
                     cf.close()
-            except IOError as err:
+            except OSError as err:
                 err.strerror = 'Error writing CSS file: ' + err.strerror
                 raise
 
@@ -553,8 +551,7 @@ class HtmlFormatter(Formatter):
                            styledefs=self.get_style_defs('body'),
                            encoding=self.encoding))
 
-        for t, line in inner:
-            yield t, line
+        yield from inner
         yield 0, DOC_FOOTER
 
     def _wrap_tablelinenos(self, inner):
@@ -680,15 +677,14 @@ class HtmlFormatter(Formatter):
         style = []
         if (self.noclasses and not self.nobackground and
                 self.style.background_color is not None):
-            style.append('background: %s' % (self.style.background_color,))
+            style.append(f'background: {self.style.background_color}')
         if self.cssstyles:
             style.append(self.cssstyles)
         style = '; '.join(style)
 
         yield 0, ('<div' + (self.cssclass and ' class="%s"' % self.cssclass) +
                   (style and (' style="%s"' % style)) + '>')
-        for tup in inner:
-            yield tup
+        yield from inner
         yield 0, '</div>\n'
 
     def _wrap_pre(self, inner):
@@ -705,8 +701,7 @@ class HtmlFormatter(Formatter):
         # the empty span here is to keep leading empty lines from being
         # ignored by HTML parsers
         yield 0, ('<pre' + (style and ' style="%s"' % style) + '><span></span>')
-        for tup in inner:
-            yield tup
+        yield from inner
         yield 0, '</pre>'
 
     def _format_lines(self, tokensource):
@@ -803,7 +798,7 @@ class HtmlFormatter(Formatter):
                     if self.style.highlight_color is not None:
                         style = (' style="background-color: %s"' %
                                  (self.style.highlight_color,))
-                    yield 1, '<span%s>%s</span>' % (style, value)
+                    yield 1, f'<span{style}>{value}</span>'
                 else:
                     yield 1, '<span class="hll">%s</span>' % value
             else:

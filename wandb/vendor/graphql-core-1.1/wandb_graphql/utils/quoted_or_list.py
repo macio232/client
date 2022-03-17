@@ -6,7 +6,7 @@ MAX_LENGTH = 5
 def quoted_or_list(items):
     '''Given [ A, B, C ] return '"A", "B" or "C"'.'''
     selected = items[:MAX_LENGTH]
-    quoted_items = ('"{}"'.format(t) for t in selected)
+    quoted_items = (f'"{t}"' for t in selected)
 
     def quoted_or_text(text, quoted_and_index):
         index = quoted_and_index[0]

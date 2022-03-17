@@ -9,7 +9,7 @@ class VariablesInAllowedPosition(ValidationRule):
     __slots__ = 'var_def_map'
 
     def __init__(self, context):
-        super(VariablesInAllowedPosition, self).__init__(context)
+        super().__init__(context)
         self.var_def_map = {}
 
     def enter_OperationDefinition(self, node, key, parent, path, ancestors):

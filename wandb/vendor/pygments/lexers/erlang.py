@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.erlang
     ~~~~~~~~~~~~~~~~~~~~~~
@@ -180,9 +179,8 @@ class ErlangShellLexer(Lexer):
                 curcode += line[end:]
             else:
                 if curcode:
-                    for item in do_insertions(insertions,
-                                              erlexer.get_tokens_unprocessed(curcode)):
-                        yield item
+                    yield from do_insertions(insertions,
+                                              erlexer.get_tokens_unprocessed(curcode))
                     curcode = ''
                     insertions = []
                 if line.startswith('*'):
@@ -190,18 +188,17 @@ class ErlangShellLexer(Lexer):
                 else:
                     yield match.start(), Generic.Output, line
         if curcode:
-            for item in do_insertions(insertions,
-                                      erlexer.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(insertions,
+                                      erlexer.get_tokens_unprocessed(curcode))
 
 
 def gen_elixir_string_rules(name, symbol, token):
     states = {}
     states['string_' + name] = [
-        (r'[^#%s\\]+' % (symbol,), token),
+        (fr'[^#{symbol}\\]+', token),
         include('escapes'),
         (r'\\.', token),
-        (r'(%s)' % (symbol,), bygroups(token), "#pop"),
+        (fr'({symbol})', bygroups(token), "#pop"),
         include('interpol')
     ]
     return states
@@ -210,17 +207,17 @@ def gen_elixir_string_rules(name, symbol, token):
 def gen_elixir_sigstr_rules(term, token, interpol=True):
     if interpol:
         return [
-            (r'[^#%s\\]+' % (term,), token),
+            (fr'[^#{term}\\]+', token),
             include('escapes'),
             (r'\\.', token),
-            (r'%s[a-zA-Z]*' % (term,), token, '#pop'),
+            (fr'{term}[a-zA-Z]*', token, '#pop'),
             include('interpol')
         ]
     else:
         return [
-            (r'[^%s\\]+' % (term,), token),
+            (fr'[^{term}\\]+', token),
             (r'\\.', token),
-            (r'%s[a-zA-Z]*' % (term,), token, '#pop'),
+            (fr'{term}[a-zA-Z]*', token, '#pop'),
         ]
 
 
@@ -309,9 +306,9 @@ class ElixirLexer(RegexLexer):
 
         for term, name in triquotes:
             states['sigils'] += [
-                (r'(~[a-z])(%s)' % (term,), bygroups(token, String.Heredoc),
+                (fr'(~[a-z])({term})', bygroups(token, String.Heredoc),
                     (name + '-end', name + '-intp')),
-                (r'(~[A-Z])(%s)' % (term,), bygroups(token, String.Heredoc),
+                (fr'(~[A-Z])({term})', bygroups(token, String.Heredoc),
                     (name + '-end', name + '-no-intp')),
             ]
 
@@ -342,12 +339,12 @@ class ElixirLexer(RegexLexer):
     op3_re = "|".join(re.escape(s) for s in OPERATORS3)
     op2_re = "|".join(re.escape(s) for s in OPERATORS2)
     op1_re = "|".join(re.escape(s) for s in OPERATORS1)
-    ops_re = r'(?:%s|%s|%s)' % (op3_re, op2_re, op1_re)
+    ops_re = fr'(?:{op3_re}|{op2_re}|{op1_re})'
     punctuation_re = "|".join(re.escape(s) for s in PUNCTUATION)
-    alnum = '\w'
+    alnum = r'\w'
     name_re = r'(?:\.\.\.|[a-z_]%s*[!?]?)' % alnum
-    modname_re = r'[A-Z]%(alnum)s*(?:\.[A-Z]%(alnum)s*)*' % {'alnum': alnum}
-    complex_name_re = r'(?:%s|%s|%s)' % (name_re, modname_re, ops_re)
+    modname_re = r'[A-Z]{alnum}*(?:\.[A-Z]{alnum}*)*'.format(alnum=alnum)
+    complex_name_re = fr'(?:{name_re}|{modname_re}|{ops_re})'
     special_atom_re = r'(?:\.\.\.|<<>>|%\{\}|%|\{\})'
 
     long_hex_char_re = r'(\\x\{)([\da-fA-F]+)(\})'
@@ -380,7 +377,7 @@ class ElixirLexer(RegexLexer):
             (r":'", String.Symbol, 'string_single_atom'),
 
             # [keywords: ...]
-            (r'(%s|%s)(:)(?=\s|\n)' % (special_atom_re, complex_name_re),
+            (fr'({special_atom_re}|{complex_name_re})(:)(?=\s|\n)',
                 bygroups(String.Symbol, Punctuation)),
 
             # @attributes
@@ -388,7 +385,7 @@ class ElixirLexer(RegexLexer):
 
             # identifiers
             (name_re, Name),
-            (r'(%%?)(%s)' % (modname_re,), bygroups(Punctuation, Name.Class)),
+            (fr'(%?)({modname_re})', bygroups(Punctuation, Name.Class)),
 
             # operators and punctuation
             (op3_re, Operator),
@@ -495,7 +492,7 @@ class ElixirConsoleLexer(Lexer):
     aliases = ['iex']
     mimetypes = ['text/x-elixir-shellsession']
 
-    _prompt_re = re.compile('(iex|\.{3})(\(\d+\))?> ')
+    _prompt_re = re.compile(r'(iex|\.{3})(\(\d+\))?> ')
 
     def get_tokens_unprocessed(self, text):
         exlexer = ElixirLexer(**self.options)
@@ -505,7 +502,7 @@ class ElixirConsoleLexer(Lexer):
         insertions = []
         for match in line_re.finditer(text):
             line = match.group()
-            if line.startswith(u'** '):
+            if line.startswith('** '):
                 in_error = True
                 insertions.append((len(curcode),
                                    [(0, Generic.Error, line[:-1])]))
@@ -520,14 +517,12 @@ class ElixirConsoleLexer(Lexer):
                     curcode += line[end:]
                 else:
                     if curcode:
-                        for item in do_insertions(
-                                insertions, exlexer.get_tokens_unprocessed(curcode)):
-                            yield item
+                        yield from do_insertions(
+                                insertions, exlexer.get_tokens_unprocessed(curcode))
                         curcode = ''
                         insertions = []
                     token = Generic.Error if in_error else Generic.Output
                     yield match.start(), token, line
         if curcode:
-            for item in do_insertions(
-                    insertions, exlexer.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(
+                    insertions, exlexer.get_tokens_unprocessed(curcode))

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # winapi.py: Windows API-Python interface (removes dependency on pywin32)
 #
 # Copyright (C) 2007 Thomas Heller <theller@ctypes.org>
@@ -36,7 +35,6 @@
 # Portions of this code were taken from pyfilesystem, which uses the above
 # new BSD license.
 
-from __future__ import with_statement
 
 import ctypes.wintypes
 from functools import reduce
@@ -281,7 +279,7 @@ def close_directory_handle(handle):
     try:
         CancelIoEx(handle, None)  # force ReadDirectoryChangesW to return
         CloseHandle(handle)       # close directory handle
-    except WindowsError:
+    except OSError:
         try:
             CloseHandle(handle)   # close directory handle
         except:
@@ -300,7 +298,7 @@ def read_directory_changes(handle, recursive):
                               len(event_buffer), recursive,
                               WATCHDOG_FILE_NOTIFY_FLAGS,
                               ctypes.byref(nbytes), None, None)
-    except WindowsError as e:
+    except OSError as e:
         if e.winerror == ERROR_OPERATION_ABORTED:
             return [], 0
         raise e
@@ -313,7 +311,7 @@ def read_directory_changes(handle, recursive):
     return event_buffer.raw, int_class(nbytes.value)
 
 
-class WinAPINativeEvent(object):
+class WinAPINativeEvent:
     def __init__(self, action, src_path):
         self.action = action
         self.src_path = src_path

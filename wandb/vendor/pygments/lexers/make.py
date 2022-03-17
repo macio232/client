@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.make
     ~~~~~~~~~~~~~~~~~~~~
@@ -57,8 +56,7 @@ class MakefileLexer(Lexer):
                 ins.append((len(done), [(0, Comment, line)]))
             else:
                 done += line
-        for item in do_insertions(ins, lex.get_tokens_unprocessed(done)):
-            yield item
+        yield from do_insertions(ins, lex.get_tokens_unprocessed(done))
 
     def analyse_text(text):
         # Many makefiles have $(BIG_CAPS) style variables

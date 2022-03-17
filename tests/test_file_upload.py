@@ -2,7 +2,6 @@
 file upload tests.
 """
 
-from __future__ import print_function
 
 import json
 import os
@@ -24,7 +23,7 @@ def test_file_upload_inject(mocked_run, publish_util, mock_server, inject_reques
         with open(os.path.join(mocked_run.dir, "test.txt"), "w") as f:
             f.write("TEST TEST")
 
-    query_str = "file=test.txt&run={}".format(mocked_run.id)
+    query_str = f"file=test.txt&run={mocked_run.id}"
     match = inject_requests.Match(path_suffix="/storage", query_str=query_str, count=2)
     inject_requests.add(match=match, http_status=500)
 
@@ -54,7 +53,7 @@ def test_file_upload_azure_inject(
         with open(os.path.join(mocked_run.dir, "test.txt"), "w") as f:
             f.write("TEST TEST")
 
-    suffix = "/azure/{}/test.txt".format(mocked_run.id)
+    suffix = f"/azure/{mocked_run.id}/test.txt"
     match = inject_requests.Match(path_suffix=suffix, count=3)
     inject_requests.add(match=match, http_status=500)
 

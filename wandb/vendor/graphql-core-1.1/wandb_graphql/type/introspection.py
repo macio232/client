@@ -181,7 +181,7 @@ __DirectiveLocation = GraphQLEnumType(
     ]))
 
 
-class TypeKind(object):
+class TypeKind:
     SCALAR = 'SCALAR'
     OBJECT = 'OBJECT'
     INTERFACE = 'INTERFACE'
@@ -192,7 +192,7 @@ class TypeKind(object):
     NON_NULL = 'NON_NULL'
 
 
-class TypeFieldResolvers(object):
+class TypeFieldResolvers:
     _kinds = (
         (GraphQLScalarType, TypeKind.SCALAR),
         (GraphQLObjectType, TypeKind.OBJECT),
@@ -210,7 +210,7 @@ class TypeFieldResolvers(object):
             if isinstance(type, klass):
                 return kind
 
-        raise Exception('Unknown kind of type: {}'.format(type))
+        raise Exception(f'Unknown kind of type: {type}')
 
     @staticmethod
     def fields(type, args, *_):

@@ -6,7 +6,7 @@ from . import ast
 from .visitor_meta import QUERY_DOCUMENT_KEYS, VisitorMeta
 
 
-class Falsey(object):
+class Falsey:
 
     def __nonzero__(self):
         return False
@@ -19,7 +19,7 @@ BREAK = object()
 REMOVE = Falsey()
 
 
-class Stack(object):
+class Stack:
     __slots__ = 'in_array', 'index', 'keys', 'edits', 'prev'
 
     def __init__(self, in_array, index, keys, edits, prev):
@@ -158,8 +158,7 @@ def visit(root, visitor, key_map=None):
     return new_root
 
 
-@six.add_metaclass(VisitorMeta)
-class Visitor(object):
+class Visitor(metaclass=VisitorMeta):
     __slots__ = ()
 
     def enter(self, node, key, parent, path, ancestors):

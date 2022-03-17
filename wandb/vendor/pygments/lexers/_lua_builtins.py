@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers._lua_builtins
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -13,7 +12,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 MODULES = {'basic': ('_G',
            '_VERSION',

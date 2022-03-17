@@ -1,4 +1,4 @@
-class PairSet(object):
+class PairSet:
     __slots__ = '_data',
 
     def __init__(self):

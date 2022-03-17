@@ -143,7 +143,7 @@ class Api:
             logger.error("%s response executing GraphQL." % res.status_code)
             logger.error(res.text)
             self.display_gorilla_error_if_found(res)
-            six.reraise(*sys.exc_info())
+            raise
 
     def display_gorilla_error_if_found(self, res):
         try:
@@ -559,7 +559,7 @@ class Api:
             },
         )
         if response["project"] is None or response["project"]["sweep"] is None:
-            raise ValueError("Sweep {}/{}/{} not found".format(entity, project, sweep))
+            raise ValueError(f"Sweep {entity}/{project}/{sweep} not found")
         data = response["project"]["sweep"]
         if data:
             data["runs"] = self._flatten_edges(data["runs"])
@@ -723,7 +723,7 @@ class Api:
             variable_values["pattern"] = filename
             response = self.gql(query, variable_values=variable_values)
             if response["model"] == None:
-                raise CommError("Run {}/{}/{} not found".format(entity, project, run))
+                raise CommError(f"Run {entity}/{project}/{run} not found")
             run = response["model"]["bucket"]
             # we only need to fetch this config once
             if variable_values["includeConfig"]:
@@ -1409,7 +1409,7 @@ class Api:
             return run["id"], run["files"]["uploadHeaders"], result
         else:
             raise CommError(
-                "Run does not exist {}/{}/{}.".format(entity, project, run_id)
+                f"Run does not exist {entity}/{project}/{run_id}."
             )
 
     @normalize_exceptions
@@ -1456,7 +1456,7 @@ class Api:
             query, variable_values={"name": project, "run": run, "entity": entity,},
         )
         if query_result["model"] is None:
-            raise CommError("Run does not exist {}/{}/{}.".format(entity, project, run))
+            raise CommError(f"Run does not exist {entity}/{project}/{run}.")
         files = self._flatten_edges(query_result["model"]["bucket"]["files"])
         return {file["name"]: file for file in files if file}
 
@@ -1609,11 +1609,11 @@ class Api:
                 response = requests.put(url, data=progress, headers=extra_headers)
                 response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            logger.error("upload_file exception {}: {}".format(url, e))
+            logger.error(f"upload_file exception {url}: {e}")
             request_headers = e.request.headers if e.request is not None else ""
-            logger.error("upload_file request headers: {}".format(request_headers))
+            logger.error(f"upload_file request headers: {request_headers}")
             response_content = e.response.content if e.response is not None else ""
-            logger.error("upload_file response body: {}".format(response_content))
+            logger.error(f"upload_file response body: {response_content}")
             status_code = e.response.status_code if e.response is not None else 0
             # We need to rewind the file for the next retry (the file passed in is seeked to 0)
             progress.rewind()
@@ -1622,7 +1622,7 @@ class Api:
                 e, (requests.exceptions.Timeout, requests.exceptions.ConnectionError)
             ):
                 e = retry.TransientError(exc=e)
-                six.reraise(type(e), e, sys.exc_info()[2])
+                raise e.with_traceback(sys.exc_info()[2])
             else:
                 util.sentry_reraise(e)
 
@@ -2002,7 +2002,7 @@ class Api:
             # If the upload URL is relative, fill it in with the base URL,
             # since its a proxied file store like the on-prem VM.
             if file_url.startswith("/"):
-                file_url = "{}{}".format(self.api_url, file_url)
+                file_url = f"{self.api_url}{file_url}"
 
             try:
                 # To handle Windows paths
@@ -2013,7 +2013,7 @@ class Api:
                     if isinstance(files, dict)
                     else open(normal_name, "rb")
                 )
-            except IOError:
+            except OSError:
                 print(f"{file_name} does not exist")
                 continue
             if progress:

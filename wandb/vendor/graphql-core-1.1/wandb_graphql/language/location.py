@@ -1,7 +1,7 @@
 __all__ = ['get_location', 'SourceLocation']
 
 
-class SourceLocation(object):
+class SourceLocation:
     __slots__ = 'line', 'column'
 
     def __init__(self, line, column):
@@ -9,7 +9,7 @@ class SourceLocation(object):
         self.column = column
 
     def __repr__(self):
-        return '<SourceLocation line={} column={}>'.format(self.line, self.column)
+        return f'<SourceLocation line={self.line} column={self.column}>'
 
     def __eq__(self, other):
         return (

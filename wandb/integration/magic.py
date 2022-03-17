@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import sys
 import six
 import argparse
@@ -132,9 +130,9 @@ def _parse_magic(val):
         return _merge_dicts(val, conf), val
     if os.path.isfile(val):
         try:
-            with open(val, "r") as stream:
+            with open(val) as stream:
                 val = yaml.safe_load(stream)
-        except IOError as e:
+        except OSError as e:
             wandb.termwarn("Unable to read magic config file", repeat=False)
             return _magic_defaults, not_set
         except yaml.YAMLError as e:
@@ -368,7 +366,7 @@ def _monkey_absl():
         if not _flags_module:
             return
         flags_dict = {}
-        for f, v in six.iteritems(_flags_as_dict()):
+        for f, v in _flags_as_dict().items():
             m = _flags_module(f)
             if not m or m.startswith("absl."):
                 continue
@@ -420,15 +418,15 @@ def _monkey_argparse():
     class MonitoredArgumentParser(argparse._ArgumentParser):
         def __init__(self, *args, **kwargs):
             _uninstall()
-            super(MonitoredArgumentParser, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             _install()
 
         def parse_args(self, *args, **kwargs):
-            args = super(MonitoredArgumentParser, self).parse_args(*args, **kwargs)
+            args = super().parse_args(*args, **kwargs)
             return args
 
         def parse_known_args(self, *args, **kwargs):
-            args, unknown = super(MonitoredArgumentParser, self).parse_known_args(
+            args, unknown = super().parse_known_args(
                 *args, **kwargs
             )
             if self._callback:

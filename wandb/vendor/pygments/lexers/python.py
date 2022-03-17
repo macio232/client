@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.python
     ~~~~~~~~~~~~~~~~~~~~~~
@@ -180,15 +179,15 @@ class PythonLexer(RegexLexer):
         ],
         'name': [
             (r'@[\w.]+', Name.Decorator),
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
         ],
         'funcname': [
             include('magicfuncs'),
-            ('[a-zA-Z_]\w*', Name.Function, '#pop'),
+            (r'[a-zA-Z_]\w*', Name.Function, '#pop'),
             default('#pop'),
         ],
         'classname': [
-            ('[a-zA-Z_]\w*', Name.Class, '#pop')
+            (r'[a-zA-Z_]\w*', Name.Class, '#pop')
         ],
         'import': [
             (r'(?:[ \t]|\\\n)+', Text),
@@ -256,7 +255,7 @@ class Python3Lexer(RegexLexer):
 
     flags = re.MULTILINE | re.UNICODE
 
-    uni_name = "[%s][%s]*" % (uni.xid_start, uni.xid_continue)
+    uni_name = f"[{uni.xid_start}][{uni.xid_continue}]*"
 
     def innerstring_rules(ttype):
         return [
@@ -265,10 +264,10 @@ class Python3Lexer(RegexLexer):
              '[hlL]?[E-GXc-giorsux%]', String.Interpol),
             # the new style '{}'.format(...) string formatting
             (r'\{'
-             '((\w+)((\.\w+)|(\[[^\]]+\]))*)?'  # field name
-             '(\![sra])?'                       # conversion
-             '(\:(.?[<>=\^])?[-+ ]?#?0?(\d+)?,?(\.\d+)?[E-GXb-gnosx%]?)?'
-             '\}', String.Interpol),
+             r'((\w+)((\.\w+)|(\[[^\]]+\]))*)?'  # field name
+             r'(\![sra])?'                       # conversion
+             r'(\:(.?[<>=\^])?[-+ ]?#?0?(\d+)?,?(\.\d+)?[E-GXb-gnosx%]?)?'
+             r'\}', String.Interpol),
 
             # backslashes, quotes and formatting signs must be parsed one at a time
             (r'[^\\\'"%{\n]+', ttype),
@@ -444,27 +443,26 @@ class PythonConsoleLexer(Lexer):
         tb = 0
         for match in line_re.finditer(text):
             line = match.group()
-            if line.startswith(u'>>> ') or line.startswith(u'... '):
+            if line.startswith('>>> ') or line.startswith('... '):
                 tb = 0
                 insertions.append((len(curcode),
                                    [(0, Generic.Prompt, line[:4])]))
                 curcode += line[4:]
-            elif line.rstrip() == u'...' and not tb:
+            elif line.rstrip() == '...' and not tb:
                 # only a new >>> prompt can end an exception block
                 # otherwise an ellipsis in place of the traceback frames
                 # will be mishandled
                 insertions.append((len(curcode),
-                                   [(0, Generic.Prompt, u'...')]))
+                                   [(0, Generic.Prompt, '...')]))
                 curcode += line[3:]
             else:
                 if curcode:
-                    for item in do_insertions(
-                            insertions, pylexer.get_tokens_unprocessed(curcode)):
-                        yield item
+                    yield from do_insertions(
+                            insertions, pylexer.get_tokens_unprocessed(curcode))
                     curcode = ''
                     insertions = []
-                if (line.startswith(u'Traceback (most recent call last):') or
-                        re.match(u'  File "[^"]+", line \\d+\\n$', line)):
+                if (line.startswith('Traceback (most recent call last):') or
+                        re.match('  File "[^"]+", line \\d+\\n$', line)):
                     tb = 1
                     curtb = line
                     tbindex = match.start()
@@ -472,7 +470,7 @@ class PythonConsoleLexer(Lexer):
                     yield match.start(), Name.Class, line
                 elif tb:
                     curtb += line
-                    if not (line.startswith(' ') or line.strip() == u'...'):
+                    if not (line.startswith(' ') or line.strip() == '...'):
                         tb = 0
                         for i, t, v in tblexer.get_tokens_unprocessed(curtb):
                             yield tbindex+i, t, v
@@ -480,9 +478,8 @@ class PythonConsoleLexer(Lexer):
                 else:
                     yield match.start(), Generic.Output, line
         if curcode:
-            for item in do_insertions(insertions,
-                                      pylexer.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(insertions,
+                                      pylexer.get_tokens_unprocessed(curcode))
         if curtb:
             for i, t, v in tblexer.get_tokens_unprocessed(curtb):
                 yield tbindex+i, t, v
@@ -671,10 +668,10 @@ class CythonLexer(RegexLexer):
         ],
         'name': [
             (r'@\w+', Name.Decorator),
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
         ],
         'funcname': [
-            ('[a-zA-Z_]\w*', Name.Function, '#pop')
+            (r'[a-zA-Z_]\w*', Name.Function, '#pop')
         ],
         'cdef': [
             (r'(public|readonly|extern|api|inline)\b', Keyword.Reserved),
@@ -691,7 +688,7 @@ class CythonLexer(RegexLexer):
             (r'.', Text),
         ],
         'classname': [
-            ('[a-zA-Z_]\w*', Name.Class, '#pop')
+            (r'[a-zA-Z_]\w*', Name.Class, '#pop')
         ],
         'import': [
             (r'(\s+)(as)(\s+)', bygroups(Text, Keyword, Text)),
@@ -858,7 +855,7 @@ class NumPyLexer(PythonLexer):
     mimetypes = []
     filenames = []
 
-    EXTRA_KEYWORDS = set((
+    EXTRA_KEYWORDS = {
         'abs', 'absolute', 'accumulate', 'add', 'alen', 'all', 'allclose',
         'alltrue', 'alterdot', 'amax', 'amin', 'angle', 'any', 'append',
         'apply_along_axis', 'apply_over_axes', 'arange', 'arccos', 'arccosh',
@@ -923,7 +920,7 @@ class NumPyLexer(PythonLexer):
         'typename', 'uniform', 'union1d', 'unique', 'unique1d', 'unravel_index',
         'unwrap', 'vander', 'var', 'vdot', 'vectorize', 'view', 'vonmises',
         'vsplit', 'vstack', 'weibull', 'where', 'who', 'zeros', 'zeros_like'
-    ))
+    }
 
     def get_tokens_unprocessed(self, text):
         for index, token, value in \

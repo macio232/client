@@ -26,8 +26,8 @@ class FragmentsOnCompositeTypes(ValidationRule):
 
     @staticmethod
     def inline_fragment_on_non_composite_error_message(type):
-        return 'Fragment cannot condition on non composite type "{}".'.format(type)
+        return f'Fragment cannot condition on non composite type "{type}".'
 
     @staticmethod
     def fragment_on_non_composite_error_message(frag_name, type):
-        return 'Fragment "{}" cannot condition on non composite type "{}".'.format(frag_name, type)
+        return f'Fragment "{frag_name}" cannot condition on non composite type "{type}".'

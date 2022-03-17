@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.c_cpp
     ~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +35,7 @@ class CFamilyLexer(RegexLexer):
     tokens = {
         'whitespace': [
             # preprocessor directives: without whitespace
-            ('^#if\s+0', Comment.Preproc, 'if0'),
+            (r'^#if\s+0', Comment.Preproc, 'if0'),
             ('^#', Comment.Preproc, 'macro'),
             # or with whitespace
             ('^(' + _ws1 + r')(#if\s+0)',
@@ -84,7 +83,7 @@ class CFamilyLexer(RegexLexer):
                 prefix=r'__', suffix=r'\b'), Keyword.Reserved),
             (r'(true|false|NULL)\b', Name.Builtin),
             (r'([a-zA-Z_]\w*)(\s*)(:)(?!:)', bygroups(Name.Label, Text, Punctuation)),
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
         ],
         'root': [
             include('whitespace'),
@@ -144,21 +143,21 @@ class CFamilyLexer(RegexLexer):
         ]
     }
 
-    stdlib_types = set((
+    stdlib_types = {
         'size_t', 'ssize_t', 'off_t', 'wchar_t', 'ptrdiff_t', 'sig_atomic_t', 'fpos_t',
         'clock_t', 'time_t', 'va_list', 'jmp_buf', 'FILE', 'DIR', 'div_t', 'ldiv_t',
-        'mbstate_t', 'wctrans_t', 'wint_t', 'wctype_t'))
-    c99_types = set((
+        'mbstate_t', 'wctrans_t', 'wint_t', 'wctype_t'}
+    c99_types = {
         '_Bool', '_Complex', 'int8_t', 'int16_t', 'int32_t', 'int64_t', 'uint8_t',
         'uint16_t', 'uint32_t', 'uint64_t', 'int_least8_t', 'int_least16_t',
         'int_least32_t', 'int_least64_t', 'uint_least8_t', 'uint_least16_t',
         'uint_least32_t', 'uint_least64_t', 'int_fast8_t', 'int_fast16_t', 'int_fast32_t',
         'int_fast64_t', 'uint_fast8_t', 'uint_fast16_t', 'uint_fast32_t', 'uint_fast64_t',
-        'intptr_t', 'uintptr_t', 'intmax_t', 'uintmax_t'))
-    linux_types = set((
+        'intptr_t', 'uintptr_t', 'intmax_t', 'uintmax_t'}
+    linux_types = {
         'clockid_t', 'cpu_set_t', 'cpumask_t', 'dev_t', 'gid_t', 'id_t', 'ino_t', 'key_t',
         'mode_t', 'nfds_t', 'pid_t', 'rlim_t', 'sig_t', 'sighandler_t', 'siginfo_t',
-        'sigset_t', 'sigval_t', 'socklen_t', 'timer_t', 'uid_t'))
+        'sigset_t', 'sigval_t', 'socklen_t', 'timer_t', 'uid_t'}
 
     def __init__(self, **options):
         self.stdlibhighlighting = get_bool_opt(options, 'stdlibhighlighting', True)
@@ -190,9 +189,9 @@ class CLexer(CFamilyLexer):
     priority = 0.1
 
     def analyse_text(text):
-        if re.search('^\s*#include [<"]', text, re.MULTILINE):
+        if re.search(r'^\s*#include [<"]', text, re.MULTILINE):
             return 0.1
-        if re.search('^\s*#ifn?def ', text, re.MULTILINE):
+        if re.search(r'^\s*#ifn?def ', text, re.MULTILINE):
             return 0.1
 
 

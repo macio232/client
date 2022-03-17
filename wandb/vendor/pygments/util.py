@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.util
     ~~~~~~~~~~~~~
@@ -224,7 +223,7 @@ def unirange(a, b):
 
     if sys.maxunicode > 0xffff:
         # wide build
-        return u'[%s-%s]' % (unichr(a), unichr(b))
+        return f'[{unichr(a)}-{unichr(b)}]'
     else:
         # narrow build stores surrogates, and the 're' module handles them
         # (incorrectly) as characters.  Since there is still ordering among
@@ -238,20 +237,20 @@ def unirange(a, b):
         ah, al = _surrogatepair(a)
         bh, bl = _surrogatepair(b)
         if ah == bh:
-            return u'(?:%s[%s-%s])' % (unichr(ah), unichr(al), unichr(bl))
+            return f'(?:{unichr(ah)}[{unichr(al)}-{unichr(bl)}])'
         else:
             buf = []
-            buf.append(u'%s[%s-%s]' %
+            buf.append('%s[%s-%s]' %
                        (unichr(ah), unichr(al),
                         ah == bh and unichr(bl) or unichr(0xdfff)))
             if ah - bh > 1:
-                buf.append(u'[%s-%s][%s-%s]' %
+                buf.append('[%s-%s][%s-%s]' %
                            unichr(ah+1), unichr(bh-1), unichr(0xdc00), unichr(0xdfff))
             if ah != bh:
-                buf.append(u'%s[%s-%s]' %
+                buf.append('%s[%s-%s]' %
                            (unichr(bh), unichr(0xdc00), unichr(bl)))
 
-            return u'(?:' + u'|'.join(buf) + u')'
+            return '(?:' + '|'.join(buf) + ')'
 
 
 def format_lines(var_name, seq, raw=False, indent_level=0):
@@ -289,7 +288,7 @@ def duplicates_removed(it, already_seen=()):
     return lst
 
 
-class Future(object):
+class Future:
     """Generic class to defer some work.
 
     Handled specially in RegexLexerMeta, to support regex string construction at
@@ -347,33 +346,19 @@ def terminal_encoding(term):
 
 # Python 2/3 compatibility
 
-if sys.version_info < (3, 0):
-    unichr = unichr
-    xrange = xrange
-    string_types = (str, unicode)
-    text_type = unicode
-    u_prefix = 'u'
-    iteritems = dict.iteritems
-    itervalues = dict.itervalues
-    import StringIO
-    import cStringIO
-    # unfortunately, io.StringIO in Python 2 doesn't accept str at all
-    StringIO = StringIO.StringIO
-    BytesIO = cStringIO.StringIO
-else:
-    unichr = chr
-    xrange = range
-    string_types = (str,)
-    text_type = str
-    u_prefix = ''
-    iteritems = dict.items
-    itervalues = dict.values
-    from io import StringIO, BytesIO, TextIOWrapper
+unichr = chr
+xrange = range
+string_types = (str,)
+text_type = str
+u_prefix = ''
+iteritems = dict.items
+itervalues = dict.values
+from io import StringIO, BytesIO, TextIOWrapper
 
-    class UnclosingTextIOWrapper(TextIOWrapper):
-        # Don't close underlying buffer on destruction.
-        def close(self):
-            self.flush()
+class UnclosingTextIOWrapper(TextIOWrapper):
+    # Don't close underlying buffer on destruction.
+    def close(self):
+        self.flush()
 
 
 def add_metaclass(metaclass):

@@ -11,7 +11,7 @@ from wandb_graphql.type import (GraphQLField, GraphQLList,
 from .utils import to_camel_case
 
 
-class DSLSchema(object):
+class DSLSchema:
     def __init__(self, client):
         self.client = client
 
@@ -33,7 +33,7 @@ class DSLSchema(object):
         return self.client.execute(document)
 
 
-class DSLType(object):
+class DSLType:
     def __init__(self, type):
         self.type = type
 
@@ -50,7 +50,7 @@ class DSLType(object):
         if camel_cased_name in self.type.fields:
             return camel_cased_name, self.type.fields[camel_cased_name]
 
-        raise KeyError('Field {} doesnt exist in type {}.'.format(name, self.type.name))
+        raise KeyError(f'Field {name} doesnt exist in type {self.type.name}.')
 
 
 def selections(*fields):
@@ -61,7 +61,7 @@ def selections(*fields):
 def get_ast_value(value):
     if isinstance(value, ast.Node):
         return value
-    if isinstance(value, six.string_types):
+    if isinstance(value, str):
         return ast.StringValue(value=value)
     elif isinstance(value, bool):
         return ast.BooleanValue(value=value)
@@ -72,7 +72,7 @@ def get_ast_value(value):
     return None
 
 
-class DSLField(object):
+class DSLField:
 
     def __init__(self, name, field):
         self.field = field
@@ -119,7 +119,7 @@ def field(field, **args):
     elif isinstance(field, DSLField):
         return field
 
-    raise Exception('Received incompatible query field: "{}".'.format(field))
+    raise Exception(f'Received incompatible query field: "{field}".')
 
 
 def query(*fields):
@@ -134,7 +134,7 @@ def query(*fields):
 
 
 def serialize_list(serializer, values):
-    assert isinstance(values, Iterable), 'Expected iterable, received "{}"'.format(repr(values))
+    assert isinstance(values, Iterable), f'Expected iterable, received "{repr(values)}"'
     return [serializer(v) for v in values]
 
 

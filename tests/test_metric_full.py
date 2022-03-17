@@ -23,7 +23,7 @@ def test_metric_default(live_mock_server, test_settings, parse_ctx):
 
     # by default we use last value
     summary = ctx_util.summary
-    assert six.viewitems(dict(val=3, val2=1)) <= six.viewitems(summary)
+    assert dict(val=3, val2=1).items() <= summary.items()
 
 
 def test_metric_copy(live_mock_server, test_settings, parse_ctx):
@@ -39,7 +39,7 @@ def test_metric_copy(live_mock_server, test_settings, parse_ctx):
     ctx_util = parse_ctx(live_mock_server.get_ctx())
 
     summary = ctx_util.summary
-    assert six.viewitems(dict(val=3, val2=1, mystep=3)) <= six.viewitems(summary)
+    assert dict(val=3, val2=1, mystep=3).items() <= summary.items()
 
 
 def test_metric_glob_none(live_mock_server, test_settings, parse_ctx):
@@ -56,7 +56,7 @@ def test_metric_glob_none(live_mock_server, test_settings, parse_ctx):
     ctx_util = parse_ctx(live_mock_server.get_ctx())
 
     summary = ctx_util.summary
-    assert six.viewitems(dict(val2=1, mystep=3)) <= six.viewitems(summary)
+    assert dict(val2=1, mystep=3).items() <= summary.items()
     assert "val" not in summary
 
 
@@ -69,7 +69,7 @@ def test_metric_glob(live_mock_server, test_settings, parse_ctx):
     ctx_util = parse_ctx(live_mock_server.get_ctx())
     summary = ctx_util.summary
 
-    assert six.viewitems(dict(val=2)) <= six.viewitems(summary)
+    assert dict(val=2).items() <= summary.items()
 
 
 def test_metric_nosummary(live_mock_server, test_settings, parse_ctx):
@@ -80,7 +80,7 @@ def test_metric_nosummary(live_mock_server, test_settings, parse_ctx):
     run.finish()
     ctx_util = parse_ctx(live_mock_server.get_ctx())
     summary = ctx_util.summary
-    assert six.viewitems(dict(val2=1)) <= six.viewitems(summary)
+    assert dict(val2=1).items() <= summary.items()
 
 
 def test_metric_none(live_mock_server, test_settings, parse_ctx):
@@ -106,7 +106,7 @@ def test_metric_sum_none(live_mock_server, test_settings, parse_ctx):
     ctx_util = parse_ctx(live_mock_server.get_ctx())
     summary = ctx_util.summary
     # if we set a metric, last is NOT disabled
-    assert six.viewitems(dict(val=3, val2=1)) <= six.viewitems(summary)
+    assert dict(val=3, val2=1).items() <= summary.items()
 
 
 def test_metric_max(live_mock_server, test_settings, parse_ctx):

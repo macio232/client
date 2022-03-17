@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.iolang
     ~~~~~~~~~~~~~~~~~~~~~~
@@ -49,7 +48,7 @@ class IoLexer(RegexLexer):
             # names
             (r'(Object|list|List|Map|args|Sequence|Coroutine|File)\b',
              Name.Builtin),
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
             # numbers
             (r'(\d+\.?\d*|\d*\.\d+)([eE][+-]?[0-9]+)?', Number.Float),
             (r'\d+', Number.Integer)

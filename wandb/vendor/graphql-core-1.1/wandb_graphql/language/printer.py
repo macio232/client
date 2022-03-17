@@ -63,7 +63,7 @@ class PrintingVisitor(Visitor):
         ], ' ')
 
     def leave_FragmentDefinition(self, node, *args):
-        return ('fragment {} on {} '.format(node.name, node.type_condition) +
+        return (f'fragment {node.name} on {node.type_condition} ' +
                 wrap('', join(node.directives, ' '), ' ') +
                 node.selection_set)
 
@@ -119,7 +119,7 @@ class PrintingVisitor(Visitor):
             ], ' ')
 
     def leave_OperationTypeDefinition(self, node, *args):
-        return '{}: {}'.format(node.operation, node.type)
+        return f'{node.operation}: {node.type}'
 
     def leave_ScalarTypeDefinition(self, node, *args):
         return 'scalar ' + node.name + wrap(' ', join(node.directives, ' '))

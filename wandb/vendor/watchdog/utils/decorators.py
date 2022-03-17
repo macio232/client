@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Most of this code was obtained from the Python documentation online.
 
 """Decorator utility functions.
@@ -72,7 +71,7 @@ def propertyx(function):
     def probe_func(frame, event, arg):
         if event == 'return':
             locals = frame.f_locals
-            func_locals.update(dict((k, locals.get(k)) for k in keys))
+            func_locals.update({k: locals.get(k) for k in keys})
             sys.settrace(None)
         return probe_func
 
@@ -97,7 +96,7 @@ def accepts(*types):
         def new_f(*args, **kwds):
             for (a, t) in zip(args, types):
                 assert isinstance(a, t),\
-                    "arg %r does not match %s" % (a, t)
+                    f"arg {a!r} does not match {t}"
             return f(*args, **kwds)
 
         new_f.__name__ = f.__name__
@@ -121,7 +120,7 @@ def returns(rtype):
         def new_f(*args, **kwds):
             result = f(*args, **kwds)
             assert isinstance(result, rtype),\
-                "return value %r does not match %s" % (result, rtype)
+                f"return value {result!r} does not match {rtype}"
             return result
 
         new_f.__name__ = f.__name__
@@ -186,9 +185,9 @@ def deprecated(func):
     @functools.wraps(func)
     def new_func(*args, **kwargs):
         warnings.warn_explicit(
-            "Call to deprecated function %(funcname)s." % {
-            'funcname': func.__name__,
-            },
+            "Call to deprecated function {funcname}.".format(
+            funcname=func.__name__,
+            ),
             category=DeprecationWarning,
             filename=func.__code__.co_filename,
             lineno=func.__code__.co_firstlineno + 1

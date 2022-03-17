@@ -6,7 +6,7 @@ class UniqueFragmentNames(ValidationRule):
     __slots__ = 'known_fragment_names',
 
     def __init__(self, context):
-        super(UniqueFragmentNames, self).__init__(context)
+        super().__init__(context)
         self.known_fragment_names = {}
 
     def enter_OperationDefinition(self, node, key, parent, path, ancestors):
@@ -25,4 +25,4 @@ class UniqueFragmentNames(ValidationRule):
 
     @staticmethod
     def duplicate_fragment_name_message(field):
-        return 'There can only be one fragment named "{}".'.format(field)
+        return f'There can only be one fragment named "{field}".'

@@ -79,4 +79,4 @@ class VisitorMeta(type):
         attrs['_leave_handlers'] = leave_handlers
         attrs['_get_enter_handler'] = enter_handlers.get
         attrs['_get_leave_handler'] = leave_handlers.get
-        return super(VisitorMeta, cls).__new__(cls, name, bases, attrs)
+        return super().__new__(cls, name, bases, attrs)

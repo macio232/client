@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers._asy_builtins
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,7 +13,7 @@
     :license: BSD, see LICENSE for details.
 """
 
-ASYFUNCNAME = set((
+ASYFUNCNAME = {
     'AND',
     'Arc',
     'ArcArrow',
@@ -1038,9 +1037,9 @@ ASYFUNCNAME = set((
     'ztick',
     'ztick3',
     'ztrans'
-))
+}
 
-ASYVARNAME = set((
+ASYVARNAME = {
     'AliceBlue',
     'Align',
     'Allow',
@@ -1642,4 +1641,4 @@ ASYVARNAME = set((
     'ylabelwidth',
     'zerotickfuzz',
     'zerowinding'
-))
+}

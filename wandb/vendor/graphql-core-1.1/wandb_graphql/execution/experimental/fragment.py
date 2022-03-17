@@ -80,7 +80,7 @@ def get_resolvers(context, type, field_asts):
         yield (response_name, Field(resolver, args, context and context.context_value, info))
 
 
-class Field(object):
+class Field:
     __slots__ = ('fn', 'args', 'context', 'info')
 
     def __init__(self, fn, args, context, info):
@@ -93,7 +93,7 @@ class Field(object):
         return self.fn(root, self.args, self.context, self.info)
 
 
-class Fragment(object):
+class Fragment:
 
     def __init__(self, type, field_asts, context=None, info=None):
         self.type = type
@@ -135,7 +135,7 @@ class Fragment(object):
     def resolve(self, root):
         if root and not self.have_type(root):
             raise GraphQLError(
-                u'Expected value of type "{}" but got: {}.'.format(self.type, type(root).__name__),
+                f'Expected value of type "{self.type}" but got: {type(root).__name__}.',
                 self.info.field_asts
             )
 
@@ -199,7 +199,7 @@ class Fragment(object):
         )
 
 
-class AbstractFragment(object):
+class AbstractFragment:
 
     def __init__(self, abstract_type, field_asts, context=None, info=None):
         self.abstract_type = abstract_type

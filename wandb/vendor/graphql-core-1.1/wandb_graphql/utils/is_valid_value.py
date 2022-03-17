@@ -18,7 +18,7 @@ def is_valid_value(value, type):
     if isinstance(type, GraphQLNonNull):
         of_type = type.of_type
         if value is None:
-            return [u'Expected "{}", found null.'.format(type)]
+            return [f'Expected "{type}", found null.']
 
         return is_valid_value(value, of_type)
 
@@ -27,12 +27,12 @@ def is_valid_value(value, type):
 
     if isinstance(type, GraphQLList):
         item_type = type.of_type
-        if not isinstance(value, string_types) and isinstance(value, Iterable):
+        if not isinstance(value, str) and isinstance(value, Iterable):
             errors = []
             for i, item in enumerate(value):
                 item_errors = is_valid_value(item, item_type)
                 for error in item_errors:
-                    errors.append(u'In element #{}: {}'.format(i, error))
+                    errors.append(f'In element #{i}: {error}')
 
             return errors
 
@@ -41,18 +41,18 @@ def is_valid_value(value, type):
 
     if isinstance(type, GraphQLInputObjectType):
         if not isinstance(value, Mapping):
-            return [u'Expected "{}", found not an object.'.format(type)]
+            return [f'Expected "{type}", found not an object.']
 
         fields = type.fields
         errors = []
 
         for provided_field in sorted(value.keys()):
             if provided_field not in fields:
-                errors.append(u'In field "{}": Unknown field.'.format(provided_field))
+                errors.append(f'In field "{provided_field}": Unknown field.')
 
         for field_name, field in fields.items():
             subfield_errors = is_valid_value(value.get(field_name), field.type)
-            errors.extend(u'In field "{}": {}'.format(field_name, e) for e in subfield_errors)
+            errors.extend(f'In field "{field_name}": {e}' for e in subfield_errors)
 
         return errors
 
@@ -63,6 +63,6 @@ def is_valid_value(value, type):
     # a non-null value.
     parse_result = type.parse_value(value)
     if parse_result is None:
-        return [u'Expected type "{}", found {}.'.format(type, json.dumps(value))]
+        return [f'Expected type "{type}", found {json.dumps(value)}.']
 
     return _empty_list

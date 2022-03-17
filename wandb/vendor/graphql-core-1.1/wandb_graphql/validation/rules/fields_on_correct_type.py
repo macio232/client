@@ -18,14 +18,14 @@ except ImportError:
 
 def _undefined_field_message(field_name, type, suggested_types,
                              suggested_fields):
-    message = 'Cannot query field "{}" on type "{}".'.format(field_name, type)
+    message = f'Cannot query field "{field_name}" on type "{type}".'
 
     if suggested_types:
         suggestions = quoted_or_list(suggested_types)
-        message += " Did you mean to use an inline fragment on {}?".format(suggestions)
+        message += f" Did you mean to use an inline fragment on {suggestions}?"
     elif suggested_fields:
         suggestions = quoted_or_list(suggested_fields)
-        message += " Did you mean {}?".format(suggestions)
+        message += f" Did you mean {suggestions}?"
 
     return message
 

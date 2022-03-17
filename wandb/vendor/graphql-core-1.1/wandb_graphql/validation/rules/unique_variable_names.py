@@ -6,7 +6,7 @@ class UniqueVariableNames(ValidationRule):
     __slots__ = 'known_variable_names',
 
     def __init__(self, context):
-        super(UniqueVariableNames, self).__init__(context)
+        super().__init__(context)
         self.known_variable_names = {}
 
     def enter_OperationDefinition(self, node, key, parent, path, ancestors):
@@ -24,4 +24,4 @@ class UniqueVariableNames(ValidationRule):
 
     @staticmethod
     def duplicate_variable_message(operation_name):
-        return 'There can be only one variable named "{}".'.format(operation_name)
+        return f'There can be only one variable named "{operation_name}".'

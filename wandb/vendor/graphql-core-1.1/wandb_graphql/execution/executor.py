@@ -288,7 +288,7 @@ def complete_value(exe_context, return_type, field_asts, info, result):
     if isinstance(return_type, GraphQLObjectType):
         return complete_object_value(exe_context, return_type, field_asts, info, result)
 
-    assert False, u'Cannot complete value of unexpected type "{}".'.format(return_type)
+    assert False, f'Cannot complete value of unexpected type "{return_type}".'
 
 
 def complete_list_value(exe_context, return_type, field_asts, info, result):
@@ -336,7 +336,7 @@ def complete_abstract_value(exe_context, return_type, field_asts, info, result):
         else:
             runtime_type = get_default_resolve_type_fn(result, exe_context.context_value, info, return_type)
 
-    if isinstance(runtime_type, string_types):
+    if isinstance(runtime_type, str):
         runtime_type = info.schema.get_type(runtime_type)
 
     if not isinstance(runtime_type, GraphQLObjectType):
@@ -354,7 +354,7 @@ def complete_abstract_value(exe_context, return_type, field_asts, info, result):
 
     if not exe_context.schema.is_possible_type(return_type, runtime_type):
         raise GraphQLError(
-            u'Runtime Object type "{}" is not a possible type for "{}".'.format(runtime_type, return_type),
+            f'Runtime Object type "{runtime_type}" is not a possible type for "{return_type}".',
             field_asts
         )
 
@@ -374,7 +374,7 @@ def complete_object_value(exe_context, return_type, field_asts, info, result):
     """
     if return_type.is_type_of and not return_type.is_type_of(result, exe_context.context_value, info):
         raise GraphQLError(
-            u'Expected value of type "{}" but got: {}.'.format(return_type, type(result).__name__),
+            f'Expected value of type "{return_type}" but got: {type(result).__name__}.',
             field_asts
         )
 
@@ -392,7 +392,7 @@ def complete_nonnull_value(exe_context, return_type, field_asts, info, result):
     )
     if completed is None:
         raise GraphQLError(
-            'Cannot return null for non-nullable field {}.{}.'.format(info.parent_type, info.field_name),
+            f'Cannot return null for non-nullable field {info.parent_type}.{info.field_name}.',
             field_asts
         )
 

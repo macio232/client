@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.cmdline
     ~~~~~~~~~~~~~~~~
@@ -9,7 +8,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 import sys
 import getopt
@@ -395,11 +393,8 @@ def main_inner(popts, args, usage):
     elif '-s' not in opts:  # treat stdin as full file (-s support is later)
         # read code from terminal, always in binary mode since we want to
         # decode ourselves and be tolerant with it
-        if sys.version_info > (3,):
-            # Python 3: we have to use .buffer to get a binary stream
-            code = sys.stdin.buffer.read()
-        else:
-            code = sys.stdin.read()
+        # Python 3: we have to use .buffer to get a binary stream
+        code = sys.stdin.buffer.read()
         if not inencoding:
             code, inencoding = guess_decode_from_terminal(code, sys.stdin)
             # else the lexer will do the decoding
@@ -461,11 +456,8 @@ def main_inner(popts, args, usage):
     else:
         if not fmter:
             fmter = TerminalFormatter(**parsed_opts)
-        if sys.version_info > (3,):
-            # Python 3: we have to use .buffer to get a binary stream
-            outfile = sys.stdout.buffer
-        else:
-            outfile = sys.stdout
+        # Python 3: we have to use .buffer to get a binary stream
+        outfile = sys.stdout.buffer
 
     # determine output encoding if not explicitly selected
     if not outencoding:
@@ -480,10 +472,9 @@ def main_inner(popts, args, usage):
     if not outfn and sys.platform in ('win32', 'cygwin') and \
        fmter.name in ('Terminal', 'Terminal256'):  # pragma: no cover
         # unfortunately colorama doesn't support binary streams on Py3
-        if sys.version_info > (3,):
-            from pygments.util import UnclosingTextIOWrapper
-            outfile = UnclosingTextIOWrapper(outfile, encoding=fmter.encoding)
-            fmter.encoding = None
+        from pygments.util import UnclosingTextIOWrapper
+        outfile = UnclosingTextIOWrapper(outfile, encoding=fmter.encoding)
+        fmter.encoding = None
         try:
             import colorama.initialise
         except ImportError:
@@ -510,11 +501,8 @@ def main_inner(popts, args, usage):
         # line by line processing of stdin (eg: for 'tail -f')...
         try:
             while 1:
-                if sys.version_info > (3,):
-                    # Python 3: we have to use .buffer to get a binary stream
-                    line = sys.stdin.buffer.readline()
-                else:
-                    line = sys.stdin.readline()
+                # Python 3: we have to use .buffer to get a binary stream
+                line = sys.stdin.buffer.readline()
                 if not line:
                     break
                 if not inencoding:

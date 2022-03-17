@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -99,7 +98,7 @@ EVENT_TYPE_CREATED = 'created'
 EVENT_TYPE_MODIFIED = 'modified'
 
 
-class FileSystemEvent(object):
+class FileSystemEvent:
     """
     Immutable type that represents a file system event that is triggered
     when a change occurs on the monitored file system.
@@ -158,7 +157,7 @@ class FileSystemMovedEvent(FileSystemEvent):
     event_type = EVENT_TYPE_MOVED
 
     def __init__(self, src_path, dest_path):
-        super(FileSystemMovedEvent, self).__init__(src_path)
+        super().__init__(src_path)
         self._dest_path = dest_path
 
     @property
@@ -190,7 +189,7 @@ class FileDeletedEvent(FileSystemEvent):
     event_type = EVENT_TYPE_DELETED
 
     def __init__(self, src_path):
-        super(FileDeletedEvent, self).__init__(src_path)
+        super().__init__(src_path)
 
     def __repr__(self):
         return "<%(class_name)s: src_path=%(src_path)r>" %\
@@ -204,7 +203,7 @@ class FileModifiedEvent(FileSystemEvent):
     event_type = EVENT_TYPE_MODIFIED
 
     def __init__(self, src_path):
-        super(FileModifiedEvent, self).__init__(src_path)
+        super().__init__(src_path)
 
     def __repr__(self):
         return ("<%(class_name)s: src_path=%(src_path)r>"
@@ -218,7 +217,7 @@ class FileCreatedEvent(FileSystemEvent):
     event_type = EVENT_TYPE_CREATED
 
     def __init__(self, src_path):
-        super(FileCreatedEvent, self).__init__(src_path)
+        super().__init__(src_path)
 
     def __repr__(self):
         return ("<%(class_name)s: src_path=%(src_path)r>"
@@ -230,7 +229,7 @@ class FileMovedEvent(FileSystemMovedEvent):
     """File system event representing file movement on the file system."""
 
     def __init__(self, src_path, dest_path):
-        super(FileMovedEvent, self).__init__(src_path, dest_path)
+        super().__init__(src_path, dest_path)
 
     def __repr__(self):
         return ("<%(class_name)s: src_path=%(src_path)r, "
@@ -250,7 +249,7 @@ class DirDeletedEvent(FileSystemEvent):
     is_directory = True
 
     def __init__(self, src_path):
-        super(DirDeletedEvent, self).__init__(src_path)
+        super().__init__(src_path)
 
     def __repr__(self):
         return ("<%(class_name)s: src_path=%(src_path)r>"
@@ -267,7 +266,7 @@ class DirModifiedEvent(FileSystemEvent):
     is_directory = True
 
     def __init__(self, src_path):
-        super(DirModifiedEvent, self).__init__(src_path)
+        super().__init__(src_path)
 
     def __repr__(self):
         return ("<%(class_name)s: src_path=%(src_path)r>"
@@ -282,7 +281,7 @@ class DirCreatedEvent(FileSystemEvent):
     is_directory = True
 
     def __init__(self, src_path):
-        super(DirCreatedEvent, self).__init__(src_path)
+        super().__init__(src_path)
 
     def __repr__(self):
         return ("<%(class_name)s: src_path=%(src_path)r>"
@@ -296,7 +295,7 @@ class DirMovedEvent(FileSystemMovedEvent):
     is_directory = True
 
     def __init__(self, src_path, dest_path):
-        super(DirMovedEvent, self).__init__(src_path, dest_path)
+        super().__init__(src_path, dest_path)
 
     def __repr__(self):
         return ("<%(class_name)s: src_path=%(src_path)r, "
@@ -306,7 +305,7 @@ class DirMovedEvent(FileSystemMovedEvent):
                           dest_path=self.dest_path))
 
 
-class FileSystemEventHandler(object):
+class FileSystemEventHandler:
     """
     Base file system event handler that you can override methods from.
     """
@@ -382,7 +381,7 @@ class PatternMatchingEventHandler(FileSystemEventHandler):
 
     def __init__(self, patterns=None, ignore_patterns=None,
                  ignore_directories=False, case_sensitive=False):
-        super(PatternMatchingEventHandler, self).__init__()
+        super().__init__()
 
         self._patterns = patterns
         self._ignore_patterns = ignore_patterns
@@ -461,7 +460,7 @@ class RegexMatchingEventHandler(FileSystemEventHandler):
 
     def __init__(self, regexes=[r".*"], ignore_regexes=[],
                  ignore_directories=False, case_sensitive=False):
-        super(RegexMatchingEventHandler, self).__init__()
+        super().__init__()
 
         if case_sensitive:
             self._regexes = [re.compile(r) for r in regexes]
@@ -541,26 +540,26 @@ class LoggingEventHandler(FileSystemEventHandler):
     """Logs all the events captured."""
 
     def on_moved(self, event):
-        super(LoggingEventHandler, self).on_moved(event)
+        super().on_moved(event)
 
         what = 'directory' if event.is_directory else 'file'
         logging.info("Moved %s: from %s to %s", what, event.src_path,
                      event.dest_path)
 
     def on_created(self, event):
-        super(LoggingEventHandler, self).on_created(event)
+        super().on_created(event)
 
         what = 'directory' if event.is_directory else 'file'
         logging.info("Created %s: %s", what, event.src_path)
 
     def on_deleted(self, event):
-        super(LoggingEventHandler, self).on_deleted(event)
+        super().on_deleted(event)
 
         what = 'directory' if event.is_directory else 'file'
         logging.info("Deleted %s: %s", what, event.src_path)
 
     def on_modified(self, event):
-        super(LoggingEventHandler, self).on_modified(event)
+        super().on_modified(event)
 
         what = 'directory' if event.is_directory else 'file'
         logging.info("Modified %s: %s", what, event.src_path)

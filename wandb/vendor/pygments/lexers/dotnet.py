@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.dotnet
     ~~~~~~~~~~~~~~~~~~~~~~
@@ -58,7 +57,7 @@ class CSharpLexer(RegexLexer):
     # http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-334.pdf
 
     levels = {
-        'none': '@?[_a-zA-Z]\w*',
+        'none': r'@?[_a-zA-Z]\w*',
         'basic': ('@?[_' + uni.combine('Lu', 'Ll', 'Lt', 'Lm', 'Nl') + ']' +
                   '[' + uni.combine('Lu', 'Ll', 'Lt', 'Lm', 'Nl', 'Nd', 'Pc',
                                     'Cf', 'Mn', 'Mc') + ']*'),
@@ -171,7 +170,7 @@ class NemerleLexer(RegexLexer):
     # http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-334.pdf
 
     levels = {
-        'none': '@?[_a-zA-Z]\w*',
+        'none': r'@?[_a-zA-Z]\w*',
         'basic': ('@?[_' + uni.combine('Lu', 'Ll', 'Lt', 'Lm', 'Nl') + ']' +
                   '[' + uni.combine('Lu', 'Ll', 'Lt', 'Lm', 'Nl', 'Nd', 'Pc',
                                     'Cf', 'Mn', 'Mc') + ']*'),
@@ -352,13 +351,13 @@ class BooLexer(RegexLexer):
             ('[*/]', Comment.Multiline)
         ],
         'funcname': [
-            ('[a-zA-Z_]\w*', Name.Function, '#pop')
+            (r'[a-zA-Z_]\w*', Name.Function, '#pop')
         ],
         'classname': [
-            ('[a-zA-Z_]\w*', Name.Class, '#pop')
+            (r'[a-zA-Z_]\w*', Name.Class, '#pop')
         ],
         'namespace': [
-            ('[a-zA-Z_][\w.]*', Name.Namespace, '#pop')
+            (r'[a-zA-Z_][\w.]*', Name.Namespace, '#pop')
         ]
     }
 
@@ -413,7 +412,7 @@ class VbNetLexer(RegexLexer):
                 'Static', 'Step', 'Stop', 'SyncLock', 'Then', 'Throw', 'To',
                 'True', 'Try', 'TryCast', 'Wend', 'Using', 'When', 'While',
                 'Widening', 'With', 'WithEvents', 'WriteOnly'),
-                   prefix='(?<!\.)', suffix=r'\b'), Keyword),
+                   prefix=r'(?<!\.)', suffix=r'\b'), Keyword),
             (r'(?<!\.)End\b', Keyword, 'end'),
             (r'(?<!\.)(Dim|Const)\b', Keyword, 'dim'),
             (r'(?<!\.)(Function|Sub|Property)(\s+)',
@@ -507,7 +506,7 @@ class CSharpAspxLexer(DelegatingLexer):
     mimetypes = []
 
     def __init__(self, **options):
-        super(CSharpAspxLexer, self).__init__(CSharpLexer, GenericAspxLexer,
+        super().__init__(CSharpLexer, GenericAspxLexer,
                                               **options)
 
     def analyse_text(text):
@@ -528,7 +527,7 @@ class VbNetAspxLexer(DelegatingLexer):
     mimetypes = []
 
     def __init__(self, **options):
-        super(VbNetAspxLexer, self).__init__(VbNetLexer, GenericAspxLexer,
+        super().__init__(VbNetLexer, GenericAspxLexer,
                                              **options)
 
     def analyse_text(text):
@@ -574,10 +573,10 @@ class FSharpLexer(RegexLexer):
         'virtual', 'volatile',
     ]
     keyopts = [
-        '!=', '#', '&&', '&', '\(', '\)', '\*', '\+', ',', '-\.',
-        '->', '-', '\.\.', '\.', '::', ':=', ':>', ':', ';;', ';', '<-',
-        '<\]', '<', '>\]', '>', '\?\?', '\?', '\[<', '\[\|', '\[', '\]',
-        '_', '`', '\{', '\|\]', '\|', '\}', '~', '<@@', '<@', '=', '@>', '@@>',
+        '!=', '#', '&&', '&', r'\(', r'\)', r'\*', r'\+', ',', r'-\.',
+        '->', '-', r'\.\.', r'\.', '::', ':=', ':>', ':', ';;', ';', '<-',
+        r'<\]', '<', r'>\]', '>', r'\?\?', r'\?', r'\[<', r'\[\|', r'\[', r'\]',
+        '_', '`', r'\{', r'\|\]', r'\|', r'\}', '~', '<@@', '<@', '=', '@>', '@@>',
     ]
 
     operators = r'[!$%&*+\./:<=>?@^|~-]'
@@ -626,7 +625,7 @@ class FSharpLexer(RegexLexer):
             (r'\b(%s)\b' % '|'.join(keywords), Keyword),
             (r'``([^`\n\r\t]|`[^`\n\r\t])+``', Name),
             (r'(%s)' % '|'.join(keyopts), Operator),
-            (r'(%s|%s)?%s' % (infix_syms, prefix_syms, operators), Operator),
+            (fr'({infix_syms}|{prefix_syms})?{operators}', Operator),
             (r'\b(%s)\b' % '|'.join(word_operators), Operator.Word),
             (r'\b(%s)\b' % '|'.join(primitives), Keyword.Type),
             (r'#[ \t]*(if|endif|else|line|nowarn|light|\d+)\b.*?\n',

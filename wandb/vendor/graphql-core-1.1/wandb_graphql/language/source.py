@@ -1,7 +1,7 @@
 __all__ = ['Source']
 
 
-class Source(object):
+class Source:
     __slots__ = 'body', 'name'
 
     def __init__(self, body, name='GraphQL'):

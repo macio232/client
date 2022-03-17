@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.javascript
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,7 +25,7 @@ JS_IDENT_START = ('(?:[$_' + uni.combine('Lu', 'Ll', 'Lt', 'Lm', 'Lo', 'Nl') +
                   ']|\\\\u[a-fA-F0-9]{4})')
 JS_IDENT_PART = ('(?:[$' + uni.combine('Lu', 'Ll', 'Lt', 'Lm', 'Lo', 'Nl',
                                        'Mn', 'Mc', 'Nd', 'Pc') +
-                 u'\u200c\u200d]|\\\\u[a-fA-F0-9]{4})')
+                 '\u200c\u200d]|\\\\u[a-fA-F0-9]{4})')
 JS_IDENT = JS_IDENT_START + '(?:' + JS_IDENT_PART + ')*'
 
 
@@ -535,8 +534,8 @@ class TypeScriptLexer(RegexLexer):
     }
 
     def analyse_text(text):
-        if re.search('^(import.+(from\s+)?["\']|'
-                     '(export\s*)?(interface|class|function)\s+)',
+        if re.search('^(import.+(from\\s+)?["\']|'
+                     r'(export\s*)?(interface|class|function)\s+)',
                      text, re.MULTILINE):
             return 1.0
 
@@ -1015,7 +1014,7 @@ class ObjectiveJLexer(RegexLexer):
     }
 
     def analyse_text(text):
-        if re.search('^\s*@import\s+[<"]', text, re.MULTILINE):
+        if re.search(r'^\s*@import\s+[<"]', text, re.MULTILINE):
             # special directive found in most Objective-J files
             return True
         return False

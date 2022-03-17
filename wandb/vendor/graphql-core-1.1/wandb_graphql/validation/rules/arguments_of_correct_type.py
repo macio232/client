@@ -20,5 +20,5 @@ class ArgumentsOfCorrectType(ValidationRule):
 
     @staticmethod
     def bad_value_message(arg_name, type, value, verbose_errors):
-        message = (u'\n' + u'\n'.join(verbose_errors)) if verbose_errors else ''
-        return 'Argument "{}" has invalid value {}.{}'.format(arg_name, value, message)
+        message = ('\n' + '\n'.join(verbose_errors)) if verbose_errors else ''
+        return f'Argument "{arg_name}" has invalid value {value}.{message}'

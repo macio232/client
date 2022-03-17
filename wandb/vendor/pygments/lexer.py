@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexer
     ~~~~~~~~~~~~~~
@@ -9,7 +8,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 import re
 import sys
@@ -49,7 +47,7 @@ class LexerMeta(type):
 
 
 @add_metaclass(LexerMeta)
-class Lexer(object):
+class Lexer:
     """
     Lexer for a specific language.
 
@@ -109,7 +107,7 @@ class Lexer(object):
 
     def __repr__(self):
         if self.options:
-            return '<pygments.lexers.%s with %r>' % (self.__class__.__name__,
+            return '<pygments.lexers.{} with {!r}>'.format(self.__class__.__name__,
                                                      self.options)
         else:
             return '<pygments.lexers.%s>' % self.__class__.__name__
@@ -169,11 +167,11 @@ class Lexer(object):
                 text = decoded
             else:
                 text = text.decode(self.encoding)
-                if text.startswith(u'\ufeff'):
-                    text = text[len(u'\ufeff'):]
+                if text.startswith('\ufeff'):
+                    text = text[len('\ufeff'):]
         else:
-            if text.startswith(u'\ufeff'):
-                text = text[len(u'\ufeff'):]
+            if text.startswith('\ufeff'):
+                text = text[len('\ufeff'):]
 
         # text now *is* a unicode string
         text = text.replace('\r\n', '\n')
@@ -252,7 +250,7 @@ class include(str):  # pylint: disable=invalid-name
     pass
 
 
-class _inherit(object):
+class _inherit:
     """
     Indicates the a state should inherit from its superclass.
     """
@@ -275,7 +273,7 @@ class combined(tuple):  # pylint: disable=invalid-name
         pass
 
 
-class _PseudoMatch(object):
+class _PseudoMatch:
     """
     A pseudo match object constructed from a string.
     """
@@ -328,7 +326,7 @@ def bygroups(*args):
     return callback
 
 
-class _This(object):
+class _This:
     """
     Special singleton used for indicating the caller class.
     Used by ``using``.
@@ -429,7 +427,7 @@ class RegexLexerMeta(LexerMeta):
     def _process_token(cls, token):
         """Preprocess the token component of a token definition."""
         assert type(token) is _TokenType or callable(token), \
-            'token type must be simple type or callable, not %r' % (token,)
+            f'token type must be simple type or callable, not {token!r}'
         return token
 
     def _process_new_state(cls, new_state, unprocessed, processed):
@@ -631,8 +629,7 @@ class RegexLexer(Lexer):
                         if type(action) is _TokenType:
                             yield pos, action, m.group()
                         else:
-                            for item in action(self, m):
-                                yield item
+                            yield from action(self, m)
                     pos = m.end()
                     if new_state is not None:
                         # state transition
@@ -661,7 +658,7 @@ class RegexLexer(Lexer):
                         # at EOL, reset state to "root"
                         statestack = ['root']
                         statetokens = tokendefs['root']
-                        yield pos, Text, u'\n'
+                        yield pos, Text, '\n'
                         pos += 1
                         continue
                     yield pos, Error, text[pos]
@@ -670,7 +667,7 @@ class RegexLexer(Lexer):
                     break
 
 
-class LexerContext(object):
+class LexerContext:
     """
     A helper object that holds lexer position data.
     """
@@ -682,7 +679,7 @@ class LexerContext(object):
         self.stack = stack or ['root']
 
     def __repr__(self):
-        return 'LexerContext(%r, %r, %r)' % (
+        return 'LexerContext({!r}, {!r}, {!r})'.format(
             self.text, self.pos, self.stack)
 
 
@@ -713,8 +710,7 @@ class ExtendedRegexLexer(RegexLexer):
                             yield ctx.pos, action, m.group()
                             ctx.pos = m.end()
                         else:
-                            for item in action(self, m, ctx):
-                                yield item
+                            yield from action(self, m, ctx)
                             if not new_state:
                                 # altered the state stack?
                                 statetokens = tokendefs[ctx.stack[-1]]
@@ -746,7 +742,7 @@ class ExtendedRegexLexer(RegexLexer):
                         # at EOL, reset state to "root"
                         ctx.stack = ['root']
                         statetokens = tokendefs['root']
-                        yield ctx.pos, Text, u'\n'
+                        yield ctx.pos, Text, '\n'
                         ctx.pos += 1
                         continue
                     yield ctx.pos, Error, text[ctx.pos]
@@ -774,8 +770,7 @@ def do_insertions(insertions, tokens):
         index, itokens = next(insertions)
     except StopIteration:
         # no insertions
-        for item in tokens:
-            yield item
+        yield from tokens
         return
 
     realpos = None
@@ -850,8 +845,7 @@ class ProfilingRegexLexer(RegexLexer):
     def get_tokens_unprocessed(self, text, stack=('root',)):
         # this needs to be a stack, since using(this) will produce nested calls
         self.__class__._prof_data.append({})
-        for tok in RegexLexer.get_tokens_unprocessed(self, text, stack):
-            yield tok
+        yield from RegexLexer.get_tokens_unprocessed(self, text, stack)
         rawdata = self.__class__._prof_data.pop()
         data = sorted(((s, repr(r).strip('u\'').replace('\\\\', '\\')[:65],
                         n, 1000 * t, 1000 * t / n)

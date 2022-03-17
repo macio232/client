@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.scanner
     ~~~~~~~~~~~~~~~~
@@ -25,7 +24,7 @@ class EndOfText(RuntimeError):
     """
 
 
-class Scanner(object):
+class Scanner:
     """
     Simple scanner
 

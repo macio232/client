@@ -82,8 +82,7 @@ def test_meta_probe(mock_server, meta, sm, record_q, log_debug, monkeypatch):
     assert len(mock_server.ctx["storage?file=wandb-metadata.json"]) == 1
     assert len(mock_server.ctx["storage?file=requirements.txt"]) == 1
     # py27 doesn't like my patching for conda-environment, just skipping
-    if sys.version_info > (3, 0):
-        assert len(mock_server.ctx["storage?file=conda-environment.yaml"]) == 1
+    assert len(mock_server.ctx["storage?file=conda-environment.yaml"]) == 1
     assert len(mock_server.ctx["storage?file=diff.patch"]) == 1
 
 

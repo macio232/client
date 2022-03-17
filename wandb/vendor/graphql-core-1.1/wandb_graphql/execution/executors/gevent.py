@@ -1,12 +1,10 @@
-from __future__ import absolute_import
-
 import gevent
 from promise import Promise
 
 from .utils import process
 
 
-class GeventExecutor(object):
+class GeventExecutor:
 
     def __init__(self):
         self.jobs = []

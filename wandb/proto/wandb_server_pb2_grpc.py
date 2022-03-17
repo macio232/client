@@ -7,7 +7,7 @@ from wandb.proto import wandb_server_pb2 as wandb_dot_proto_dot_wandb__server__p
 from wandb.proto import wandb_telemetry_pb2 as wandb_dot_proto_dot_wandb__telemetry__pb2
 
 
-class InternalServiceStub(object):
+class InternalServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -193,7 +193,7 @@ class InternalServiceStub(object):
                 )
 
 
-class InternalServiceServicer(object):
+class InternalServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def RunUpdate(self, request, context):
@@ -592,7 +592,7 @@ def add_InternalServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class InternalService(object):
+class InternalService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

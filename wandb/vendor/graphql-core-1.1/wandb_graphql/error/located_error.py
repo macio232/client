@@ -21,7 +21,7 @@ class GraphQLLocatedError(GraphQLError):
         else:
             stack = sys.exc_info()[2]
 
-        super(GraphQLLocatedError, self).__init__(
+        super().__init__(
             message=message,
             nodes=nodes,
             stack=stack

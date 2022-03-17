@@ -21,7 +21,7 @@ def visit_using_rules(schema, type_info, ast, rules):
     return context.get_errors()
 
 
-class VariableUsage(object):
+class VariableUsage:
     __slots__ = 'node', 'type'
 
     def __init__(self, node, type):
@@ -44,7 +44,7 @@ class UsageVisitor(Visitor):
         self.usages.append(usage)
 
 
-class ValidationContext(object):
+class ValidationContext:
     __slots__ = ('_schema', '_ast', '_type_info', '_errors', '_fragments', '_fragment_spreads',
                  '_recursively_referenced_fragments', '_variable_usages', '_recursive_variable_usages')
 

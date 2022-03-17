@@ -6,7 +6,7 @@ class UniqueArgumentNames(ValidationRule):
     __slots__ = 'known_arg_names',
 
     def __init__(self, context):
-        super(UniqueArgumentNames, self).__init__(context)
+        super().__init__(context)
         self.known_arg_names = {}
 
     def enter_Field(self, node, key, parent, path, ancestors):
@@ -29,4 +29,4 @@ class UniqueArgumentNames(ValidationRule):
 
     @staticmethod
     def duplicate_arg_message(field):
-        return 'There can only be one argument named "{}".'.format(field)
+        return f'There can only be one argument named "{field}".'

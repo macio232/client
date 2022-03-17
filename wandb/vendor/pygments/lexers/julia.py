@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.julia
     ~~~~~~~~~~~~~~~~~~~~~
@@ -20,7 +19,7 @@ from pygments.util import shebang_matches, unirange
 __all__ = ['JuliaLexer', 'JuliaConsoleLexer']
 
 allowed_variable = (
-    u'(?:[a-zA-Z_\u00A1-\uffff]|%s)(?:[a-zA-Z_0-9\u00A1-\uffff]|%s)*!*' %
+    '(?:[a-zA-Z_\u00A1-\uffff]|%s)(?:[a-zA-Z_0-9\u00A1-\uffff]|%s)*!*' %
     ((unirange(0x10000, 0x10ffff),) * 2))
 
 
@@ -129,59 +128,59 @@ class JuliaLexer(RegexLexer):
 
             # builtins
             (words([
-                u'ARGS', u'CPU_CORES', u'C_NULL', u'DevNull', u'ENDIAN_BOM',
-                u'ENV', u'I', u'Inf', u'Inf16', u'Inf32', u'Inf64',
-                u'InsertionSort', u'JULIA_HOME', u'LOAD_PATH', u'MergeSort',
-                u'NaN', u'NaN16', u'NaN32', u'NaN64', u'OS_NAME',
-                u'QuickSort', u'RoundDown', u'RoundFromZero', u'RoundNearest',
-                u'RoundNearestTiesAway', u'RoundNearestTiesUp',
-                u'RoundToZero', u'RoundUp', u'STDERR', u'STDIN', u'STDOUT',
-                u'VERSION', u'WORD_SIZE', u'catalan', u'e', u'eu',
-                u'eulergamma', u'golden', u'im', u'nothing', u'pi', u'γ',
-                u'π', u'φ'],
+                'ARGS', 'CPU_CORES', 'C_NULL', 'DevNull', 'ENDIAN_BOM',
+                'ENV', 'I', 'Inf', 'Inf16', 'Inf32', 'Inf64',
+                'InsertionSort', 'JULIA_HOME', 'LOAD_PATH', 'MergeSort',
+                'NaN', 'NaN16', 'NaN32', 'NaN64', 'OS_NAME',
+                'QuickSort', 'RoundDown', 'RoundFromZero', 'RoundNearest',
+                'RoundNearestTiesAway', 'RoundNearestTiesUp',
+                'RoundToZero', 'RoundUp', 'STDERR', 'STDIN', 'STDOUT',
+                'VERSION', 'WORD_SIZE', 'catalan', 'e', 'eu',
+                'eulergamma', 'golden', 'im', 'nothing', 'pi', 'γ',
+                'π', 'φ'],
                 suffix=r'\b'), Name.Builtin),
 
             # operators
             # see: https://github.com/JuliaLang/julia/blob/master/src/julia-parser.scm
             (words([
                 # prec-assignment
-                u'=', u':=', u'+=', u'-=', u'*=', u'/=', u'//=', u'.//=', u'.*=', u'./=',
-                u'\=', u'.\=', u'^=', u'.^=', u'÷=', u'.÷=', u'%=', u'.%=', u'|=', u'&=',
-                u'$=', u'=>', u'<<=', u'>>=', u'>>>=', u'~', u'.+=', u'.-=',
+                '=', ':=', '+=', '-=', '*=', '/=', '//=', './/=', '.*=', './=',
+                r'\=', r'.\=', '^=', '.^=', '÷=', '.÷=', '%=', '.%=', '|=', '&=',
+                '$=', '=>', '<<=', '>>=', '>>>=', '~', '.+=', '.-=',
                 # prec-conditional
-                u'?',
+                '?',
                 # prec-arrow
-                u'--', u'-->',
+                '--', '-->',
                 # prec-lazy-or
-                u'||',
+                '||',
                 # prec-lazy-and
-                u'&&',
+                '&&',
                 # prec-comparison
-                u'>', u'<', u'>=', u'≥', u'<=', u'≤', u'==', u'===', u'≡', u'!=', u'≠',
-                u'!==', u'≢', u'.>', u'.<', u'.>=', u'.≥', u'.<=', u'.≤', u'.==', u'.!=',
-                u'.≠', u'.=', u'.!', u'<:', u'>:', u'∈', u'∉', u'∋', u'∌', u'⊆',
-                u'⊈', u'⊂',
-                u'⊄', u'⊊',
+                '>', '<', '>=', '≥', '<=', '≤', '==', '===', '≡', '!=', '≠',
+                '!==', '≢', '.>', '.<', '.>=', '.≥', '.<=', '.≤', '.==', '.!=',
+                '.≠', '.=', '.!', '<:', '>:', '∈', '∉', '∋', '∌', '⊆',
+                '⊈', '⊂',
+                '⊄', '⊊',
                 # prec-pipe
-                u'|>', u'<|',
+                '|>', '<|',
                 # prec-colon
-                u':',
+                ':',
                 # prec-plus
-                u'+', u'-', u'.+', u'.-', u'|', u'∪', u'$',
+                '+', '-', '.+', '.-', '|', '∪', '$',
                 # prec-bitshift
-                u'<<', u'>>', u'>>>', u'.<<', u'.>>', u'.>>>',
+                '<<', '>>', '>>>', '.<<', '.>>', '.>>>',
                 # prec-times
-                u'*', u'/', u'./', u'÷', u'.÷', u'%', u'⋅', u'.%', u'.*', u'\\', u'.\\', u'&', u'∩',
+                '*', '/', './', '÷', '.÷', '%', '⋅', '.%', '.*', '\\', '.\\', '&', '∩',
                 # prec-rational
-                u'//', u'.//',
+                '//', './/',
                 # prec-power
-                u'^', u'.^',
+                '^', '.^',
                 # prec-decl
-                u'::',
+                '::',
                 # prec-dot
-                u'.',
+                '.',
                 # unary op
-                u'+', u'-', u'!', u'~', u'√', u'∛', u'∜'
+                '+', '-', '!', '~', '√', '∛', '∜'
             ]), Operator),
 
             # chars
@@ -314,9 +313,8 @@ class JuliaConsoleLexer(Lexer):
                 curcode += line[6:]
             else:
                 if curcode:
-                    for item in do_insertions(
-                            insertions, jllexer.get_tokens_unprocessed(curcode)):
-                        yield item
+                    yield from do_insertions(
+                            insertions, jllexer.get_tokens_unprocessed(curcode))
                     curcode = ''
                     insertions = []
                 if line.startswith('ERROR: ') or error:
@@ -328,6 +326,5 @@ class JuliaConsoleLexer(Lexer):
             start += len(line)
 
         if curcode:
-            for item in do_insertions(
-                    insertions, jllexer.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(
+                    insertions, jllexer.get_tokens_unprocessed(curcode))

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.ruby
     ~~~~~~~~~~~~~~~~~~~~
@@ -58,8 +57,7 @@ class RubyLexer(ExtendedRegexLexer):
         ctx.pos = match.start(5)
         ctx.end = match.end(5)
         # this may find other heredocs
-        for i, t, v in self.get_tokens_unprocessed(context=ctx):
-            yield i, t, v
+        yield from self.get_tokens_unprocessed(context=ctx)
         ctx.pos = match.end()
 
         if outermost:
@@ -403,8 +401,8 @@ class RubyConsoleLexer(Lexer):
     aliases = ['rbcon', 'irb']
     mimetypes = ['text/x-ruby-shellsession']
 
-    _prompt_re = re.compile('irb\([a-zA-Z_]\w*\):\d{3}:\d+[>*"\'] '
-                            '|>> |\?> ')
+    _prompt_re = re.compile('irb\\([a-zA-Z_]\\w*\\):\\d{3}:\\d+[>*"\'] '
+                            r'|>> |\?> ')
 
     def get_tokens_unprocessed(self, text):
         rblexer = RubyLexer(**self.options)
@@ -421,16 +419,14 @@ class RubyConsoleLexer(Lexer):
                 curcode += line[end:]
             else:
                 if curcode:
-                    for item in do_insertions(
-                            insertions, rblexer.get_tokens_unprocessed(curcode)):
-                        yield item
+                    yield from do_insertions(
+                            insertions, rblexer.get_tokens_unprocessed(curcode))
                     curcode = ''
                     insertions = []
                 yield match.start(), Generic.Output, line
         if curcode:
-            for item in do_insertions(
-                    insertions, rblexer.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(
+                    insertions, rblexer.get_tokens_unprocessed(curcode))
 
 
 class FancyLexer(RegexLexer):
@@ -498,11 +494,11 @@ class FancyLexer(RegexLexer):
             (r'[a-zA-Z](\w|[-+?!=*/^><%])*:', Name.Function),
             # operators, must be below functions
             (r'[-+*/~,<>=&!?%^\[\].$]+', Operator),
-            ('[A-Z]\w*', Name.Constant),
-            ('@[a-zA-Z_]\w*', Name.Variable.Instance),
-            ('@@[a-zA-Z_]\w*', Name.Variable.Class),
+            (r'[A-Z]\w*', Name.Constant),
+            (r'@[a-zA-Z_]\w*', Name.Variable.Instance),
+            (r'@@[a-zA-Z_]\w*', Name.Variable.Class),
             ('@@?', Operator),
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
             # numbers - / checks are necessary to avoid mismarking regexes,
             # see comment in RubyLexer
             (r'(0[oO]?[0-7]+(?:_[0-7]+)*)(\s*)([/?])?',

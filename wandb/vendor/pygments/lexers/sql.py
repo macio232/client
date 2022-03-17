@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.sql
     ~~~~~~~~~~~~~~~~~~~
@@ -89,8 +88,7 @@ def language_callback(lexer, match):
     yield (match.start(3), String, match.group(3))
     # 4 = string contents
     if l:
-        for x in l.get_tokens_unprocessed(match.group(4)):
-            yield x
+        yield from l.get_tokens_unprocessed(match.group(4))
     else:
         yield (match.start(4), String, match.group(4))
     # 5 = $, 6 = delimiter, 7 = $
@@ -99,7 +97,7 @@ def language_callback(lexer, match):
     yield (match.start(7), String, match.group(7))
 
 
-class PostgresBase(object):
+class PostgresBase:
     """Base class for Postgres-related lexers.
 
     This is implemented as a mixin to avoid the Lexer metaclass kicking in.
@@ -111,9 +109,8 @@ class PostgresBase(object):
     def get_tokens_unprocessed(self, text, *args):
         # Have a copy of the entire text to be used by `language_callback`.
         self.text = text
-        for x in super(PostgresBase, self).get_tokens_unprocessed(
-                text, *args):
-            yield x
+        yield from super().get_tokens_unprocessed(
+                text, *args)
 
     def _get_lexer(self, lang):
         if lang.lower() == 'sql':
@@ -155,7 +152,7 @@ class PostgresLexer(PostgresBase, RegexLexer):
             (r'\s+', Text),
             (r'--.*\n?', Comment.Single),
             (r'/\*', Comment.Multiline, 'multiline-comments'),
-            (r'(' + '|'.join(s.replace(" ", "\s+")
+            (r'(' + '|'.join(s.replace(" ", r"\s+")
                              for s in DATATYPES + PSEUDO_TYPES)
              + r')\b', Name.Builtin),
             (words(KEYWORDS, suffix=r'\b'), Keyword),
@@ -205,7 +202,7 @@ class PlPgsqlLexer(PostgresBase, RegexLexer):
     mimetypes = ['text/x-plpgsql']
 
     flags = re.IGNORECASE
-    tokens = dict((k, l[:]) for (k, l) in iteritems(PostgresLexer.tokens))
+    tokens = {k: l[:] for (k, l) in iteritems(PostgresLexer.tokens)}
 
     # extend the keywords list
     for i, pattern in enumerate(tokens['root']):
@@ -239,7 +236,7 @@ class PsqlRegexLexer(PostgresBase, RegexLexer):
     aliases = []    # not public
 
     flags = re.IGNORECASE
-    tokens = dict((k, l[:]) for (k, l) in iteritems(PostgresLexer.tokens))
+    tokens = {k: l[:] for (k, l) in iteritems(PostgresLexer.tokens)}
 
     tokens['root'].append(
         (r'\\[^\s]+', Keyword.Pseudo, 'psql-command'))
@@ -263,7 +260,7 @@ re_message = re.compile(
     r'FATAL|HINT|DETAIL|CONTEXT|LINE [0-9]+):)(.*?\n)')
 
 
-class lookahead(object):
+class lookahead:
     """Wrap an iterator and allow pushing back an item."""
     def __init__(self, x):
         self.iter = iter(x)
@@ -319,8 +316,7 @@ class PostgresConsoleLexer(Lexer):
                 # Identify a shell prompt in case of psql commandline example
                 if line.startswith('$') and not curcode:
                     lexer = get_lexer_by_name('console', **self.options)
-                    for x in lexer.get_tokens_unprocessed(line):
-                        yield x
+                    yield from lexer.get_tokens_unprocessed(line)
                     break
 
                 # Identify a psql prompt
@@ -340,9 +336,8 @@ class PostgresConsoleLexer(Lexer):
                     break
 
             # Emit the combined stream of command and prompt(s)
-            for item in do_insertions(insertions,
-                                      sql.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(insertions,
+                                      sql.get_tokens_unprocessed(curcode))
 
             # Emit the output lines
             out_token = Generic.Output
@@ -635,9 +630,8 @@ class SqliteConsoleLexer(Lexer):
                 curcode += line[8:]
             else:
                 if curcode:
-                    for item in do_insertions(insertions,
-                                              sql.get_tokens_unprocessed(curcode)):
-                        yield item
+                    yield from do_insertions(insertions,
+                                              sql.get_tokens_unprocessed(curcode))
                     curcode = ''
                     insertions = []
                 if line.startswith('SQL error: '):
@@ -645,9 +639,8 @@ class SqliteConsoleLexer(Lexer):
                 else:
                     yield (match.start(), Generic.Output, line)
         if curcode:
-            for item in do_insertions(insertions,
-                                      sql.get_tokens_unprocessed(curcode)):
-                yield item
+            yield from do_insertions(insertions,
+                                      sql.get_tokens_unprocessed(curcode))
 
 
 class RqlLexer(RegexLexer):

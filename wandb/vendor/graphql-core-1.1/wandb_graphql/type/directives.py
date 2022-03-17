@@ -6,7 +6,7 @@ from .definition import GraphQLArgument, GraphQLNonNull, is_input_type
 from .scalars import GraphQLBoolean, GraphQLString
 
 
-class DirectiveLocation(object):
+class DirectiveLocation:
     # Operations
     QUERY = 'QUERY'
     MUTATION = 'MUTATION'
@@ -46,7 +46,7 @@ class DirectiveLocation(object):
     ]
 
 
-class GraphQLDirective(object):
+class GraphQLDirective:
     __slots__ = 'name', 'args', 'description', 'locations'
 
     def __init__(self, name, description=None, args=None, locations=None):
@@ -59,7 +59,7 @@ class GraphQLDirective(object):
         self.locations = locations
 
         if args:
-            assert isinstance(args, Mapping), '{} args must be a dict with argument names as keys.'.format(name)
+            assert isinstance(args, Mapping), f'{name} args must be a dict with argument names as keys.'
             for arg_name, _arg in args.items():
                 assert_valid_name(arg_name)
                 assert is_input_type(_arg.type), '{}({}) argument type must be Input Type but got {}.'.format(

@@ -1,4 +1,4 @@
-class HTTPTransport(object):
+class HTTPTransport:
 
     def __init__(self, url, headers=None, cookies=None):
         self.url = url

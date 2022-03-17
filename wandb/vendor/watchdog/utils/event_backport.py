@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Backport of Event from py2.7 (method wait in py2.6 returns None)
 
 from threading import Condition, Lock
 
 
-class Event(object):
+class Event:
 
     def __init__(self,):
         self.__cond = Condition(Lock())

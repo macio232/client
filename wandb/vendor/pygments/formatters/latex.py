@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.formatters.latex
     ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -9,7 +8,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import division
 
 from pygments.formatter import Formatter
 from pygments.lexer import Lexer
@@ -266,7 +264,7 @@ class LatexFormatter(Formatter):
             self.right = self.escapeinside[1]
         else:
             self.escapeinside = ''
-        self.envname = options.get('envname', u'Verbatim')
+        self.envname = options.get('envname', 'Verbatim')
 
         self._create_stylesheet()
 
@@ -337,17 +335,17 @@ class LatexFormatter(Formatter):
             realoutfile = outfile
             outfile = StringIO()
 
-        outfile.write(u'\\begin{' + self.envname + u'}[commandchars=\\\\\\{\\}')
+        outfile.write('\\begin{' + self.envname + '}[commandchars=\\\\\\{\\}')
         if self.linenos:
             start, step = self.linenostart, self.linenostep
-            outfile.write(u',numbers=left' +
-                          (start and u',firstnumber=%d' % start or u'') +
-                          (step and u',stepnumber=%d' % step or u''))
+            outfile.write(',numbers=left' +
+                          (start and ',firstnumber=%d' % start or '') +
+                          (step and ',stepnumber=%d' % step or ''))
         if self.mathescape or self.texcomments or self.escapeinside:
-            outfile.write(u',codes={\\catcode`\\$=3\\catcode`\\^=7\\catcode`\\_=8}')
+            outfile.write(',codes={\\catcode`\\$=3\\catcode`\\^=7\\catcode`\\_=8}')
         if self.verboptions:
-            outfile.write(u',' + self.verboptions)
-        outfile.write(u']\n')
+            outfile.write(',' + self.verboptions)
+        outfile.write(']\n')
 
         for ttype, value in tokensource:
             if ttype in Token.Comment:
@@ -403,14 +401,14 @@ class LatexFormatter(Formatter):
                 spl = value.split('\n')
                 for line in spl[:-1]:
                     if line:
-                        outfile.write("\\%s{%s}{%s}" % (cp, styleval, line))
+                        outfile.write(f"\\{cp}{{{styleval}}}{{{line}}}")
                     outfile.write('\n')
                 if spl[-1]:
-                    outfile.write("\\%s{%s}{%s}" % (cp, styleval, spl[-1]))
+                    outfile.write(f"\\{cp}{{{styleval}}}{{{spl[-1]}}}")
             else:
                 outfile.write(value)
 
-        outfile.write(u'\\end{' + self.envname + u'}\n')
+        outfile.write('\\end{' + self.envname + '}\n')
 
         if self.full:
             encoding = self.encoding or 'utf8'
@@ -452,8 +450,7 @@ class LatexEmbeddedLexer(Lexer):
         for i, t, v in self.lang.get_tokens_unprocessed(text):
             if t in Token.Comment or t in Token.String:
                 if buf:
-                    for x in self.get_tokens_aux(idx, buf):
-                        yield x
+                    yield from self.get_tokens_aux(idx, buf)
                     buf = ''
                 yield i, t, v
             else:
@@ -461,8 +458,7 @@ class LatexEmbeddedLexer(Lexer):
                     idx = i
                 buf += v
         if buf:
-            for x in self.get_tokens_aux(idx, buf):
-                yield x
+            yield from self.get_tokens_aux(idx, buf)
 
     def get_tokens_aux(self, index, text):
         while text:

@@ -97,7 +97,7 @@ def get_variable_value(schema, definition_ast, input):
             [definition_ast]
         )
 
-    message = (u'\n' + u'\n'.join(errors)) if errors else u''
+    message = ('\n' + '\n'.join(errors)) if errors else ''
     raise GraphQLError(
         'Variable "${}" got invalid value {}.{}'.format(
             variable.name.value,
@@ -121,7 +121,7 @@ def coerce_value(type, value):
 
     if isinstance(type, GraphQLList):
         item_type = type.of_type
-        if not isinstance(value, string_types) and isinstance(value, Iterable):
+        if not isinstance(value, str) and isinstance(value, Iterable):
             return [coerce_value(item_type, item) for item in value]
         else:
             return [coerce_value(item_type, value)]

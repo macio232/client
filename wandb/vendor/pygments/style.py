@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.style
     ~~~~~~~~~~~~~~
@@ -143,7 +142,7 @@ class StyleMeta(type):
 
 
 @add_metaclass(StyleMeta)
-class Style(object):
+class Style:
 
     #: overall background color (``None`` means transparent)
     background_color = '#ffffff'

@@ -1,5 +1,5 @@
 import pytest
-import mock
+from unittest import mock
 
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport

@@ -6,7 +6,7 @@ class NoFragmentCycles(ValidationRule):
     __slots__ = 'errors', 'visited_frags', 'spread_path', 'spread_path_index_by_name'
 
     def __init__(self, context):
-        super(NoFragmentCycles, self).__init__(context)
+        super().__init__(context)
         self.errors = []
         self.visited_frags = set()
         self.spread_path = []
@@ -56,4 +56,4 @@ class NoFragmentCycles(ValidationRule):
     @staticmethod
     def cycle_error_message(fragment_name, spread_names):
         via = ' via {}'.format(', '.join(spread_names)) if spread_names else ''
-        return 'Cannot spread fragment "{}" within itself{}.'.format(fragment_name, via)
+        return f'Cannot spread fragment "{fragment_name}" within itself{via}.'

@@ -10,7 +10,7 @@ def queue_process(q):
     process(promise, fn, args, kwargs)
 
 
-class ProcessExecutor(object):
+class ProcessExecutor:
 
     def __init__(self):
         self.processes = []

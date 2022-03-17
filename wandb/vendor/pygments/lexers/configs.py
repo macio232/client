@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.configs
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -141,7 +140,7 @@ def _rx_indent(level):
         level_repeat = ''
     else:
         level_repeat = '{%s}' % level
-    return r'(?:\t| %s\t| {%s})%s.*\n' % (space_repeat, tab_width, level_repeat)
+    return fr'(?:\t| {space_repeat}\t| {{{tab_width}}}){level_repeat}.*\n'
 
 
 class KconfigLexer(RegexLexer):
@@ -546,9 +545,9 @@ class DockerLexer(RegexLexer):
 
     tokens = {
         'root': [
-            (r'^(ONBUILD)(\s+)(%s)\b' % (_keywords,),
+            (fr'^(ONBUILD)(\s+)({_keywords})\b',
              bygroups(Name.Keyword, Whitespace, Keyword)),
-            (r'^(%s)\b(.*)' % (_keywords,), bygroups(Keyword, String)),
+            (fr'^({_keywords})\b(.*)', bygroups(Keyword, String)),
             (r'#.*', Comment),
             (r'RUN', Keyword),  # Rest of line falls through
             (r'(.*\\\n)*.+', using(BashLexer)),
@@ -586,7 +585,7 @@ class TerraformLexer(RegexLexer):
                     prefix=r'\b', suffix=r'\b'), Keyword.Reserved, 'function'),
              (words(('ingress', 'egress', 'listener', 'default', 'connection'),
                     prefix=r'\b', suffix=r'\b'), Keyword.Declaration),
-             ('\$\{', String.Interpol, 'var_builtin'),
+             (r'\$\{', String.Interpol, 'var_builtin'),
         ],
         'function': [
              (r'(\s+)(".*")(\s+)', bygroups(Text, String, Text)),

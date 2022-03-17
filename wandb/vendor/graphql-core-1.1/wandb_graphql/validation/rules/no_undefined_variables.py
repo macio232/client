@@ -7,7 +7,7 @@ class NoUndefinedVariables(ValidationRule):
 
     def __init__(self, context):
         self.defined_variable_names = set()
-        super(NoUndefinedVariables, self).__init__(context)
+        super().__init__(context)
 
     @staticmethod
     def undefined_var_message(var_name, op_name=None):
@@ -15,7 +15,7 @@ class NoUndefinedVariables(ValidationRule):
             return 'Variable "${}" is not defined by operation "{}".'.format(
                 var_name, op_name
             )
-        return 'Variable "${}" is not defined.'.format(var_name)
+        return f'Variable "${var_name}" is not defined.'
 
     def enter_OperationDefinition(self, operation, key, parent, path, ancestors):
         self.defined_variable_names = set()

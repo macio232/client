@@ -2,7 +2,7 @@
 # Run scripts/generate_ast.py to generate this file.
 
 
-class Node(object):
+class Node:
     __slots__ = ()
 
 

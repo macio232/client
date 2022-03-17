@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers
     ~~~~~~~~~~~~~~~
@@ -141,7 +140,7 @@ def load_lexer_from_file(filename, lexername="CustomLexer", **options):
         lexer_class = custom_namespace[lexername]
         # And finally instantiate it with the options
         return lexer_class(**options)
-    except IOError as err:
+    except OSError as err:
         raise ClassNotFound('cannot read %s' % filename)
     except ClassNotFound as err:
         raise
@@ -230,8 +229,7 @@ def _iter_lexerclasses(plugins=True):
             _load_lexers(module_name)
         yield _lexer_cache[name]
     if plugins:
-        for lexer in find_plugin_lexers():
-            yield lexer
+        yield from find_plugin_lexers()
 
 
 def guess_lexer_for_filename(_fn, _text, **options):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.textfmts
     ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -266,7 +265,7 @@ class TodotxtLexer(RegexLexer):
             # 5. Leading project
             (project_regex, Project, 'incomplete'),
             # 6. Non-whitespace catch-all
-            ('\S+', IncompleteTaskText, 'incomplete'),
+            (r'\S+', IncompleteTaskText, 'incomplete'),
         ],
 
         # Parse a complete task
@@ -277,9 +276,9 @@ class TodotxtLexer(RegexLexer):
             (context_regex, Context),
             (project_regex, Project),
             # Tokenize non-whitespace text
-            ('\S+', CompleteTaskText),
+            (r'\S+', CompleteTaskText),
             # Tokenize whitespace not containing a newline
-            ('\s+', CompleteTaskText),
+            (r'\s+', CompleteTaskText),
         ],
 
         # Parse an incomplete task
@@ -290,8 +289,8 @@ class TodotxtLexer(RegexLexer):
             (context_regex, Context),
             (project_regex, Project),
             # Tokenize non-whitespace text
-            ('\S+', IncompleteTaskText),
+            (r'\S+', IncompleteTaskText),
             # Tokenize whitespace not containing a newline
-            ('\s+', IncompleteTaskText),
+            (r'\s+', IncompleteTaskText),
         ],
     }

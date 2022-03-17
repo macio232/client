@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.qvt
     ~~~~~~~~~~~~~~~~~~~
@@ -141,7 +140,7 @@ class QVToLexer(RegexLexer):
             include('strings')
             ],
         'name': [
-            ('[a-zA-Z_]\w*', Name),
+            (r'[a-zA-Z_]\w*', Name),
             ],
         # numbers: excerpt taken from the python lexer
         'numbers': [

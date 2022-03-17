@@ -2,7 +2,6 @@
 metric internal tests.
 """
 
-from __future__ import print_function
 
 import math
 
@@ -324,7 +323,7 @@ def test_metric_dot_flat_escaped(publish_util):
     history.append(dict(step=2, data={"nodots": 2}))
     history.append(dict(step=3, data={"this.also": 1}))
 
-    m1 = pb.MetricRecord(name="this\.also")
+    m1 = pb.MetricRecord(name=r"this\.also")
     m1.summary.max = True
     metrics = _make_metrics([m1])
     ctx_util = publish_util(history=history, metrics=metrics)
@@ -333,7 +332,7 @@ def test_metric_dot_flat_escaped(publish_util):
     summary = ctx_util.summary
     assert metrics and len(metrics) == 1
     mmetric = metrics[0]
-    assert mmetric == {"1": "this\.also", "7": [2]}
+    assert mmetric == {"1": r"this\.also", "7": [2]}
     assert summary == {
         "_step": 3,
         "this.also": {"max": 2},

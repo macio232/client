@@ -104,13 +104,13 @@ def build_ast_schema(document):
     ast_map = {d.name.value: d for d in type_defs}
 
     if query_type_name not in ast_map:
-        raise Exception('Specified query type "{}" not found in document.'.format(query_type_name))
+        raise Exception(f'Specified query type "{query_type_name}" not found in document.')
 
     if mutation_type_name and mutation_type_name not in ast_map:
-        raise Exception('Specified mutation type "{}" not found in document.'.format(mutation_type_name))
+        raise Exception(f'Specified mutation type "{mutation_type_name}" not found in document.')
 
     if subscription_type_name and subscription_type_name not in ast_map:
-        raise Exception('Specified subscription type "{}" not found in document.'.format(subscription_type_name))
+        raise Exception(f'Specified subscription type "{subscription_type_name}" not found in document.')
 
     inner_type_map = OrderedDict([
         ('String', GraphQLString),
@@ -150,11 +150,11 @@ def build_ast_schema(document):
             return inner_type_map[type_name]
 
         if type_name not in ast_map:
-            raise Exception('Type "{}" not found in document'.format(type_name))
+            raise Exception(f'Type "{type_name}" not found in document')
 
         inner_type_def = make_schema_def(ast_map[type_name])
         if not inner_type_def:
-            raise Exception('Nothing constructed for "{}".'.format(type_name))
+            raise Exception(f'Nothing constructed for "{type_name}".')
 
         inner_type_map[type_name] = inner_type_def
         return inner_type_def
@@ -165,7 +165,7 @@ def build_ast_schema(document):
 
         handler = _schema_def_handlers.get(type(definition))
         if not handler:
-            raise Exception('Type kind "{}" not supported.'.format(type(definition).__name__))
+            raise Exception(f'Type kind "{type(definition).__name__}" not supported.')
 
         return handler(definition)
 

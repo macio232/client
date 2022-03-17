@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers._csound_builtins
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +44,7 @@
 #   lua_exec  <http://www.csounds.com/manual/html/lua_exec.html>
 #   lua_opdef <http://www.csounds.com/manual/html/lua_opdef.html>
 # which allow Lua highlighting.
-OPCODES = set((
+OPCODES = {
     'ATSadd',
     'ATSaddnz',
     'ATSbufread',
@@ -1343,4 +1342,4 @@ OPCODES = set((
     'zkr',
     'zkw',
     'zkwm'
-))
+}

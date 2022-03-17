@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.formatters.svg
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,7 +114,7 @@ class SvgFormatter(Formatter):
             outfile.write('<svg xmlns="http://www.w3.org/2000/svg">\n')
             outfile.write('<g font-family="%s" font-size="%s">\n' %
                           (self.fontfamily, self.fontsize))
-        outfile.write('<text x="%s" y="%s" xml:space="preserve">' % (x, y))
+        outfile.write(f'<text x="{x}" y="{y}" xml:space="preserve">')
         for ttype, value in tokensource:
             style = self._get_style(ttype)
             tspan = style and '<tspan' + style + '>' or ''

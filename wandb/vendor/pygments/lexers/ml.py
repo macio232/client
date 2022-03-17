@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.ml
     ~~~~~~~~~~~~~~~~~~
@@ -30,7 +29,7 @@ class SMLLexer(RegexLexer):
     filenames = ['*.sml', '*.sig', '*.fun']
     mimetypes = ['text/x-standardml', 'application/x-standardml']
 
-    alphanumid_reserved = set((
+    alphanumid_reserved = {
         # Core
         'abstype', 'and', 'andalso', 'as', 'case', 'datatype', 'do', 'else',
         'end', 'exception', 'fn', 'fun', 'handle', 'if', 'in', 'infix',
@@ -39,16 +38,16 @@ class SMLLexer(RegexLexer):
         # Modules
         'eqtype', 'functor', 'include', 'sharing', 'sig', 'signature',
         'struct', 'structure', 'where',
-    ))
+    }
 
-    symbolicid_reserved = set((
+    symbolicid_reserved = {
         # Core
-        ':', '\|', '=', '=>', '->', '#',
+        ':', r'\|', '=', '=>', '->', '#',
         # Modules
         ':>',
-    ))
+    }
 
-    nonid_reserved = set(('(', ')', '[', ']', '{', '}', ',', ';', '...', '_'))
+    nonid_reserved = {'(', ')', '[', ']', '{', '}', ',', ';', '...', '_'}
 
     alphanumid_re = r"[a-zA-Z][\w']*"
     symbolicid_re = r"[!%&$#+\-/:<=>?@\\~`^|*]+"
@@ -240,9 +239,9 @@ class SMLLexer(RegexLexer):
             (r'\'[\w\']*', Name.Decorator),
             (r'\(', Punctuation, 'tyvarseq'),
 
-            (r'(%s)(\s*)(=(?!%s))' % (alphanumid_re, symbolicid_re),
+            (fr'({alphanumid_re})(\s*)(=(?!{symbolicid_re}))',
              bygroups(Name.Variable, Text, Punctuation), '#pop'),
-            (r'(%s)(\s*)(=(?!%s))' % (symbolicid_re, symbolicid_re),
+            (fr'({symbolicid_re})(\s*)(=(?!{symbolicid_re}))',
              bygroups(Name.Variable, Text, Punctuation), '#pop'),
             (r'(%s)' % alphanumid_re, Name.Variable, '#pop'),
             (r'(%s)' % symbolicid_re, Name.Variable, '#pop'),
@@ -402,7 +401,7 @@ class OcamlLexer(RegexLexer):
             (r'\(\*(?![)])', Comment, 'comment'),
             (r'\b(%s)\b' % '|'.join(keywords), Keyword),
             (r'(%s)' % '|'.join(keyopts[::-1]), Operator),
-            (r'(%s|%s)?%s' % (infix_syms, prefix_syms, operators), Operator),
+            (fr'({infix_syms}|{prefix_syms})?{operators}', Operator),
             (r'\b(%s)\b' % '|'.join(word_operators), Operator.Word),
             (r'\b(%s)\b' % '|'.join(primitives), Keyword.Type),
 

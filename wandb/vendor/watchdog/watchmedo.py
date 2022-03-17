@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -178,14 +177,14 @@ def tricks_from(args):
         observer = Observer(timeout=args.timeout)
 
         if not os.path.exists(tricks_file):
-            raise IOError("cannot find tricks file: %s" % tricks_file)
+            raise OSError("cannot find tricks file: %s" % tricks_file)
 
         config = load_config(tricks_file)
 
         try:
             tricks = config[CONFIG_KEY_TRICKS]
         except KeyError:
-            raise KeyError("No `%s' key specified in %s." % (
+            raise KeyError("No `{}' key specified in {}.".format(
                            CONFIG_KEY_TRICKS, tricks_file))
 
         if CONFIG_KEY_PYTHON_PATH in config:

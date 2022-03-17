@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.elm
     ~~~~~~~~~~~~~~~~~~~
@@ -77,7 +76,7 @@ class ElmLexer(RegexLexer):
             (words((builtinOps), prefix=r'\(', suffix=r'\)'), Name.Function),
 
             # Infix Operators
-            (words((builtinOps)), Name.Function),
+            (words(builtinOps), Name.Function),
 
             # Numbers
             include('numbers'),

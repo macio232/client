@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.rdf
     ~~~~~~~~~~~~~~~~~~~
@@ -31,27 +30,27 @@ class SparqlLexer(RegexLexer):
 
     # character group definitions ::
 
-    PN_CHARS_BASE_GRP = (u'a-zA-Z'
-                         u'\u00c0-\u00d6'
-                         u'\u00d8-\u00f6'
-                         u'\u00f8-\u02ff'
-                         u'\u0370-\u037d'
-                         u'\u037f-\u1fff'
-                         u'\u200c-\u200d'
-                         u'\u2070-\u218f'
-                         u'\u2c00-\u2fef'
-                         u'\u3001-\ud7ff'
-                         u'\uf900-\ufdcf'
-                         u'\ufdf0-\ufffd')
+    PN_CHARS_BASE_GRP = ('a-zA-Z'
+                         '\u00c0-\u00d6'
+                         '\u00d8-\u00f6'
+                         '\u00f8-\u02ff'
+                         '\u0370-\u037d'
+                         '\u037f-\u1fff'
+                         '\u200c-\u200d'
+                         '\u2070-\u218f'
+                         '\u2c00-\u2fef'
+                         '\u3001-\ud7ff'
+                         '\uf900-\ufdcf'
+                         '\ufdf0-\ufffd')
 
     PN_CHARS_U_GRP = (PN_CHARS_BASE_GRP + '_')
 
     PN_CHARS_GRP = (PN_CHARS_U_GRP +
                     r'\-' +
                     r'0-9' +
-                    u'\u00b7' +
-                    u'\u0300-\u036f' +
-                    u'\u203f-\u2040')
+                    '\u00b7' +
+                    '\u0300-\u036f' +
+                    '\u203f-\u2040')
 
     HEX_GRP = '0-9A-Fa-f'
 
@@ -76,8 +75,8 @@ class SparqlLexer(RegexLexer):
 
     PN_PREFIX = PN_CHARS_BASE + '(?:[' + PN_CHARS_GRP + '.]*' + PN_CHARS + ')?'
 
-    VARNAME = u'[0-9' + PN_CHARS_U_GRP + '][' + PN_CHARS_U_GRP + \
-              u'0-9\u00b7\u0300-\u036f\u203f-\u2040]*'
+    VARNAME = '[0-9' + PN_CHARS_U_GRP + '][' + PN_CHARS_U_GRP + \
+              '0-9\u00b7\u0300-\u036f\u203f-\u2040]*'
 
     PERCENT = '%' + HEX + HEX
 
@@ -111,7 +110,7 @@ class SparqlLexer(RegexLexer):
             #  # variables ::
             ('[?$]' + VARNAME, Name.Variable),
             # prefixed names ::
-            (r'(' + PN_PREFIX + ')?(\:)(' + PN_LOCAL + ')?',
+            (r'(' + PN_PREFIX + r')?(\:)(' + PN_LOCAL + ')?',
              bygroups(Name.Namespace, Punctuation, Name.Tag)),
             # function names ::
             (r'((?i)str|lang|langmatches|datatype|bound|iri|uri|bnode|rand|abs|'
@@ -125,7 +124,7 @@ class SparqlLexer(RegexLexer):
             # boolean literals ::
             (r'(true|false)', Keyword.Constant),
             # double literals ::
-            (r'[+\-]?(\d+\.\d*' + EXPONENT + '|\.?\d+' + EXPONENT + ')', Number.Float),
+            (r'[+\-]?(\d+\.\d*' + EXPONENT + r'|\.?\d+' + EXPONENT + ')', Number.Float),
             # decimal literals ::
             (r'[+\-]?(\d+\.\d*|\.\d+)', Number.Float),
             # integer literals ::

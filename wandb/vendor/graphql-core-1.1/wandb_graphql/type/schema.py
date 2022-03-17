@@ -6,7 +6,7 @@ from .introspection import IntrospectionSchema
 from .typemap import GraphQLTypeMap
 
 
-class GraphQLSchema(object):
+class GraphQLSchema:
     """Schema Definition
 
     A Schema is created by supplying the root types of each type of operation, query and mutation (optional).
@@ -33,18 +33,18 @@ class GraphQLSchema(object):
     __slots__ = '_query', '_mutation', '_subscription', '_type_map', '_directives', '_implementations', '_possible_type_map'
 
     def __init__(self, query, mutation=None, subscription=None, directives=None, types=None):
-        assert isinstance(query, GraphQLObjectType), 'Schema query must be Object Type but got: {}.'.format(query)
+        assert isinstance(query, GraphQLObjectType), f'Schema query must be Object Type but got: {query}.'
         if mutation:
             assert isinstance(mutation, GraphQLObjectType), \
-                'Schema mutation must be Object Type but got: {}.'.format(mutation)
+                f'Schema mutation must be Object Type but got: {mutation}.'
 
         if subscription:
             assert isinstance(subscription, GraphQLObjectType), \
-                'Schema subscription must be Object Type but got: {}.'.format(subscription)
+                f'Schema subscription must be Object Type but got: {subscription}.'
 
         if types:
             assert isinstance(types, Iterable), \
-                'Schema types must be iterable if provided but got: {}.'.format(types)
+                f'Schema types must be iterable if provided but got: {types}.'
 
         self._query = query
         self._mutation = mutation

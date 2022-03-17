@@ -1,4 +1,4 @@
-class SyncExecutor(object):
+class SyncExecutor:
 
     def wait_until_finished(self):
         pass

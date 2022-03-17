@@ -26,8 +26,8 @@ class ScalarLeafs(ValidationRule):
 
     @staticmethod
     def no_subselection_allowed_message(field, type):
-        return 'Field "{}" of type "{}" must not have a sub selection.'.format(field, type)
+        return f'Field "{field}" of type "{type}" must not have a sub selection.'
 
     @staticmethod
     def required_subselection_message(field, type):
-        return 'Field "{}" of type "{}" must have a sub selection.'.format(field, type)
+        return f'Field "{field}" of type "{type}" must have a sub selection.'

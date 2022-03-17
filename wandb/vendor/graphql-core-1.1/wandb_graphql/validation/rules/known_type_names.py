@@ -5,9 +5,9 @@ from .base import ValidationRule
 
 
 def _unknown_type_message(type, suggested_types):
-    message = 'Unknown type "{}".'.format(type)
+    message = f'Unknown type "{type}".'
     if suggested_types:
-        message += ' Perhaps you meant {}?'.format(quoted_or_list(suggested_types))
+        message += f' Perhaps you meant {quoted_or_list(suggested_types)}?'
 
     return message
 

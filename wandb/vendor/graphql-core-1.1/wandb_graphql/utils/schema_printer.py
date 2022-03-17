@@ -52,15 +52,15 @@ def _print_schema_definition(schema):
 
     query_type = schema.get_query_type()
     if query_type:
-        operation_types.append('  query: {}'.format(query_type))
+        operation_types.append(f'  query: {query_type}')
 
     mutation_type = schema.get_mutation_type()
     if mutation_type:
-        operation_types.append('  mutation: {}'.format(mutation_type))
+        operation_types.append(f'  mutation: {mutation_type}')
 
     subscription_type = schema.get_subscription_type()
     if subscription_type:
-        operation_types.append('  subscription: {}'.format(subscription_type))
+        operation_types.append(f'  subscription: {subscription_type}')
 
     return 'schema {{\n{}\n}}'.format('\n'.join(operation_types))
 
@@ -86,7 +86,7 @@ def _print_type(type):
 
 
 def _print_scalar(type):
-    return 'scalar {}'.format(type.name)
+    return f'scalar {type.name}'
 
 
 def _print_object(type):
@@ -130,7 +130,7 @@ def _print_input_object(type):
 
 
 def _print_fields(type):
-    return '\n'.join('  {}{}: {}{}'.format(f_name, _print_args(f), f.type, _print_deprecated(f))
+    return '\n'.join(f'  {f_name}{_print_args(f)}: {f.type}{_print_deprecated(f)}'
                      for f_name, f in type.fields.items())
 
 
@@ -142,7 +142,7 @@ def _print_deprecated(field_or_enum_value):
     elif reason in ('', DEFAULT_DEPRECATION_REASON):
         return ' @deprecated'
     else:
-        return ' @deprecated(reason: {})'.format(print_ast(ast_from_value(reason)))
+        return f' @deprecated(reason: {print_ast(ast_from_value(reason))})'
 
 
 def _print_args(field_or_directives):
@@ -158,7 +158,7 @@ def _print_input_value(name, arg):
     else:
         default_value = ''
 
-    return '{}: {}{}'.format(name, arg.type, default_value)
+    return f'{name}: {arg.type}{default_value}'
 
 
 def _print_directive(directive):

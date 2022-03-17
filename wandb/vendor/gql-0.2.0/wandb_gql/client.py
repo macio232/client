@@ -11,12 +11,12 @@ log = logging.getLogger(__name__)
 class RetryError(Exception):
     """Custom exception thrown when retry logic fails"""
     def __init__(self, retries_count, last_exception):
-        message = "Failed %s retries: %s" % (retries_count, last_exception)
-        super(RetryError, self).__init__(message)
+        message = f"Failed {retries_count} retries: {last_exception}"
+        super().__init__(message)
         self.last_exception = last_exception
 
 
-class Client(object):
+class Client:
     def __init__(self, schema=None, introspection=None, type_def=None, transport=None,
                  fetch_schema_from_transport=False, retries=0):
         assert not(type_def and introspection), 'Cant provide introspection type definition at the same time'

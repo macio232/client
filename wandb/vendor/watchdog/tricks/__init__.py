@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -80,7 +79,7 @@ class ShellCommandTrick(Trick):
     def __init__(self, shell_command=None, patterns=None, ignore_patterns=None,
                  ignore_directories=False, wait_for_process=False,
                  drop_during_process=False):
-        super(ShellCommandTrick, self).__init__(patterns, ignore_patterns,
+        super().__init__(patterns, ignore_patterns,
                                                 ignore_directories)
         self.shell_command = shell_command
         self.wait_for_process = wait_for_process
@@ -136,7 +135,7 @@ class AutoRestartTrick(Trick):
     def __init__(self, command, patterns=None, ignore_patterns=None,
                  ignore_directories=False, stop_signal=signal.SIGINT,
                  kill_after=10):
-        super(AutoRestartTrick, self).__init__(
+        super().__init__(
             patterns, ignore_patterns, ignore_directories)
         self.command = command
         self.stop_signal = stop_signal

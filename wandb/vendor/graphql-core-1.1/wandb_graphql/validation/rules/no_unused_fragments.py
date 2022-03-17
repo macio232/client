@@ -6,7 +6,7 @@ class NoUnusedFragments(ValidationRule):
     __slots__ = 'fragment_definitions', 'operation_definitions', 'fragment_adjacencies', 'spread_names'
 
     def __init__(self, context):
-        super(NoUnusedFragments, self).__init__(context)
+        super().__init__(context)
         self.operation_definitions = []
         self.fragment_definitions = []
 
@@ -35,4 +35,4 @@ class NoUnusedFragments(ValidationRule):
 
     @staticmethod
     def unused_fragment_message(fragment_name):
-        return 'Fragment "{}" is never used.'.format(fragment_name)
+        return f'Fragment "{fragment_name}" is never used.'

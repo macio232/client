@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers._sourcemod_builtins
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -12,7 +11,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 FUNCTIONS = (
     'OnEntityCreated',

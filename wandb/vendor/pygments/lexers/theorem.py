@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.theorem
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,7 +92,7 @@ class CoqLexer(RegexLexer):
         '<->', '=', '>', '>]', r'>\}', r'\?', r'\?\?', r'\[', r'\[<', r'\[>',
         r'\[\|', ']', '_', '`', r'\{', r'\{<', r'\|', r'\|]', r'\}', '~', '=>',
         r'/\\', r'\\/', r'\{\|', r'\|\}',
-        u'Π', u'λ',
+        'Π', 'λ',
     )
     operators = r'[!$%&*+\./:<=>?@^|~-]'
     prefix_syms = r'[!?~]'
@@ -114,7 +113,7 @@ class CoqLexer(RegexLexer):
             # (r'\b([A-Z][\w\']*)(\.)', Name.Namespace, 'dotted'),
             (r'\b([A-Z][\w\']*)', Name),
             (r'(%s)' % '|'.join(keyopts[::-1]), Operator),
-            (r'(%s|%s)?%s' % (infix_syms, prefix_syms, operators), Operator),
+            (fr'({infix_syms}|{prefix_syms})?{operators}', Operator),
             (r'\b(%s)\b' % '|'.join(primitives), Keyword.Type),
 
             (r"[^\W\d][\w']*", Name),
@@ -415,16 +414,16 @@ class LeanLexer(RegexLexer):
     )
 
     operators = (
-        u'!=', u'#', u'&', u'&&', u'*', u'+', u'-', u'/', u'@', u'!', u'`',
-        u'-.', u'->', u'.', u'..', u'...', u'::', u':>', u';', u';;', u'<',
-        u'<-', u'=', u'==', u'>', u'_', u'|', u'||', u'~', u'=>', u'<=', u'>=',
-        u'/\\', u'\\/', u'∀', u'Π', u'λ', u'↔', u'∧', u'∨', u'≠', u'≤', u'≥',
-        u'¬', u'⁻¹', u'⬝', u'▸', u'→', u'∃', u'ℕ', u'ℤ', u'≈', u'×', u'⌞',
-        u'⌟', u'≡', u'⟨', u'⟩',
+        '!=', '#', '&', '&&', '*', '+', '-', '/', '@', '!', '`',
+        '-.', '->', '.', '..', '...', '::', ':>', ';', ';;', '<',
+        '<-', '=', '==', '>', '_', '|', '||', '~', '=>', '<=', '>=',
+        '/\\', '\\/', '∀', 'Π', 'λ', '↔', '∧', '∨', '≠', '≤', '≥',
+        '¬', '⁻¹', '⬝', '▸', '→', '∃', 'ℕ', 'ℤ', '≈', '×', '⌞',
+        '⌟', '≡', '⟨', '⟩',
     )
 
-    punctuation = (u'(', u')', u':', u'{', u'}', u'[', u']', u'⦃', u'⦄',
-                   u':=', u',')
+    punctuation = ('(', ')', ':', '{', '}', '[', ']', '⦃', '⦄',
+                   ':=', ',')
 
     tokens = {
         'root': [
@@ -436,9 +435,9 @@ class LeanLexer(RegexLexer):
             (words(keywords3, prefix=r'\b', suffix=r'\b'), Keyword.Type),
             (words(operators), Name.Builtin.Pseudo),
             (words(punctuation), Operator),
-            (u"[A-Za-z_\u03b1-\u03ba\u03bc-\u03fb\u1f00-\u1ffe\u2100-\u214f]"
-             u"[A-Za-z_'\u03b1-\u03ba\u03bc-\u03fb\u1f00-\u1ffe\u2070-\u2079"
-             u"\u207f-\u2089\u2090-\u209c\u2100-\u214f0-9]*", Name),
+            ("[A-Za-z_\u03b1-\u03ba\u03bc-\u03fb\u1f00-\u1ffe\u2100-\u214f]"
+             "[A-Za-z_'\u03b1-\u03ba\u03bc-\u03fb\u1f00-\u1ffe\u2070-\u2079"
+             "\u207f-\u2089\u2090-\u209c\u2100-\u214f0-9]*", Name),
             (r'\d+', Number.Integer),
             (r'"', String.Double, 'string'),
             (r'[~?][a-z][\w\']*:', Name.Variable)

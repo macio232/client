@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Yesudeep Mangalapilly <yesudeep@gmail.com>
 # Copyright 2012 Google, Inc.
@@ -77,7 +76,6 @@ Collections and Utility Classes
 
 """
 
-from __future__ import with_statement
 from watchdog.utils import platform
 
 import threading
@@ -166,7 +164,7 @@ def is_renamed(kev):
     return kev.fflags & select.KQ_NOTE_RENAME
 
 
-class KeventDescriptorSet(object):
+class KeventDescriptorSet:
 
     """
     Thread-safe kevent descriptor collection.
@@ -321,7 +319,7 @@ class KeventDescriptorSet(object):
         descriptor.close()
 
 
-class KeventDescriptor(object):
+class KeventDescriptor:
 
     """
     A kevent descriptor convenience data structure to keep together:

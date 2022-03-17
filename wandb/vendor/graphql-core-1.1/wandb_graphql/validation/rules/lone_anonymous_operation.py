@@ -8,7 +8,7 @@ class LoneAnonymousOperation(ValidationRule):
 
     def __init__(self, context):
         self.operation_count = 0
-        super(LoneAnonymousOperation, self).__init__(context)
+        super().__init__(context)
 
     def enter_Document(self, node, key, parent, path, ancestors):
         self.operation_count = \

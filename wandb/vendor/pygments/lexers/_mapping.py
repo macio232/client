@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers._mapping
     ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -13,7 +12,6 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
 
 LEXERS = {
     'ABAPLexer': ('pygments.lexers.business', 'ABAP', ('abap',), ('*.abap', '*.ABAP'), ('text/x-abap',)),
@@ -462,14 +460,14 @@ if __name__ == '__main__':  # pragma: no cover
     for root, dirs, files in os.walk('.'):
         for filename in files:
             if filename.endswith('.py') and not filename.startswith('_'):
-                module_name = 'pygments.lexers%s.%s' % (
+                module_name = 'pygments.lexers{}.{}'.format(
                     root[1:].replace('/', '.'), filename[:-3])
                 print(module_name)
                 module = __import__(module_name, None, None, [''])
                 for lexer_name in module.__all__:
                     lexer = getattr(module, lexer_name)
                     found_lexers.append(
-                        '%r: %r' % (lexer_name,
+                        '{!r}: {!r}'.format(lexer_name,
                                     (module_name,
                                      lexer.name,
                                      tuple(lexer.aliases),

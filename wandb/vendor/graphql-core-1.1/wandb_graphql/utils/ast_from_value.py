@@ -40,7 +40,7 @@ def ast_from_value(value, type=None):
 
         return ast.FloatValue(string_num)
 
-    if isinstance(value, string_types):
+    if isinstance(value, str):
         if isinstance(type, GraphQLEnumType) and re.match(r'^[_a-zA-Z][_a-zA-Z0-9]*$', value):
             return ast.EnumValue(value)
 

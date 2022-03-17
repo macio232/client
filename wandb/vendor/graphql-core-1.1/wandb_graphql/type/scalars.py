@@ -68,20 +68,20 @@ GraphQLFloat = GraphQLScalarType(
 
 
 def coerce_string(value):
-    if isinstance(value, string_types):
+    if isinstance(value, str):
         return value
 
     if isinstance(value, bool):
-        return u'true' if value else u'false'
+        return 'true' if value else 'false'
 
-    return text_type(value)
+    return str(value)
 
 
 def coerce_str(value):
-    if isinstance(value, string_types):
+    if isinstance(value, str):
         return value
 
-    return text_type(value)
+    return str(value)
 
 
 def parse_string_literal(ast):

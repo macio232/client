@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.haskell
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -302,7 +301,7 @@ class AgdaLexer(RegexLexer):
             (r'\b(Set|Prop)\b', Keyword.Type),
             #  Special Symbols
             (r'(\(|\)|\{|\})', Operator),
-            (u'(\\.{1,3}|\\||\u039B|\u2200|\u2192|:|=|->)', Operator.Word),
+            ('(\\.{1,3}|\\||\u039B|\u2200|\u2192|:|=|->)', Operator.Word),
             #  Numbers
             (r'\d+[eE][+-]?\d+', Number.Float),
             (r'\d+\.\d+([eE][+-]?\d+)?', Number.Float),
@@ -455,10 +454,10 @@ class CryptolLexer(RegexLexer):
         ],
     }
 
-    EXTRA_KEYWORDS = set(('join', 'split', 'reverse', 'transpose', 'width',
+    EXTRA_KEYWORDS = {'join', 'split', 'reverse', 'transpose', 'width',
                           'length', 'tail', '<<', '>>', '<<<', '>>>', 'const',
                           'reg', 'par', 'seq', 'ASSERT', 'undefined', 'error',
-                          'trace'))
+                          'trace'}
 
     def get_tokens_unprocessed(self, text):
         stack = ['root']
@@ -531,8 +530,7 @@ class LiterateLexer(Lexer):
                     latex += line
             insertions.append((len(code),
                                list(lxlexer.get_tokens_unprocessed(latex))))
-        for item in do_insertions(insertions, self.baselexer.get_tokens_unprocessed(code)):
-            yield item
+        yield from do_insertions(insertions, self.baselexer.get_tokens_unprocessed(code))
 
 
 class LiterateHaskellLexer(LiterateLexer):
@@ -680,7 +678,7 @@ class KokaLexer(RegexLexer):
     sboundary = '(?!'+symbols+')'
 
     # name boundary: a keyword should not be followed by any of these
-    boundary = '(?![\w/])'
+    boundary = r'(?![\w/])'
 
     # koka token abstractions
     tokenType = Name.Attribute

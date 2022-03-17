@@ -39,8 +39,8 @@ class ProvidedNonNullArguments(ValidationRule):
 
     @staticmethod
     def missing_field_arg_message(name, arg_name, type):
-        return 'Field "{}" argument "{}" of type "{}" is required but not provided.'.format(name, arg_name, type)
+        return f'Field "{name}" argument "{arg_name}" of type "{type}" is required but not provided.'
 
     @staticmethod
     def missing_directive_arg_message(name, arg_name, type):
-        return 'Directive "{}" argument "{}" of type "{}" is required but not provided.'.format(name, arg_name, type)
+        return f'Directive "{name}" argument "{arg_name}" of type "{type}" is required but not provided.'

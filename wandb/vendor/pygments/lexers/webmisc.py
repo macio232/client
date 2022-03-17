@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     pygments.lexers.webmisc
     ~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,13 +83,13 @@ class XQueryLexer(ExtendedRegexLexer):
     # ncnamechar = ncnamestartchar + (ur"|-|\.|[0-9]|\u00B7|[\u0300-\u036F]|"
     #                                 ur"[\u203F-\u2040]")
     ncnamechar = r"(?:" + ncnamestartchar + r"|-|\.|[0-9])"
-    ncname = "(?:%s+%s*)" % (ncnamestartchar, ncnamechar)
+    ncname = f"(?:{ncnamestartchar}+{ncnamechar}*)"
     pitarget_namestartchar = r"(?:[A-KN-WYZ]|_|:|[a-kn-wyz])"
     pitarget_namechar = r"(?:" + pitarget_namestartchar + r"|-|\.|[0-9])"
-    pitarget = "%s+%s*" % (pitarget_namestartchar, pitarget_namechar)
-    prefixedname = "%s:%s" % (ncname, ncname)
+    pitarget = f"{pitarget_namestartchar}+{pitarget_namechar}*"
+    prefixedname = f"{ncname}:{ncname}"
     unprefixedname = ncname
-    qname = "(?:%s|%s)" % (prefixedname, unprefixedname)
+    qname = f"(?:{prefixedname}|{unprefixedname})"
 
     entityref = r'(?:&(?:lt|gt|amp|quot|apos|nbsp);)'
     charref = r'(?:&#[0-9]+;|&#x[0-9a-fA-F]+;)'
@@ -438,7 +437,7 @@ class XQueryLexer(ExtendedRegexLexer):
         ],
         'varname': [
             (r'\(:', Comment, 'comment'),
-            (r'(' + qname + ')(\()?', bygroups(Name, Punctuation), 'operator'),
+            (r'(' + qname + r')(\()?', bygroups(Name, Punctuation), 'operator'),
         ],
         'singletype': [
             include('whitespace'),
@@ -515,7 +514,7 @@ class XQueryLexer(ExtendedRegexLexer):
         'xml_comment': [
             (r'(-->)', popstate_xmlcomment_callback),
             (r'[^-]{1,2}', Literal),
-            (u'\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
+            ('\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
              unirange(0x10000, 0x10ffff), Literal),
         ],
         'processing_instruction': [
@@ -525,12 +524,12 @@ class XQueryLexer(ExtendedRegexLexer):
         ],
         'processing_instruction_content': [
             (r'\?>', String.Doc, '#pop'),
-            (u'\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
+            ('\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
              unirange(0x10000, 0x10ffff), Literal),
         ],
         'cdata_section': [
             (r']]>', String.Doc, '#pop'),
-            (u'\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
+            ('\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
              unirange(0x10000, 0x10ffff), Literal),
         ],
         'start_tag': [
@@ -600,7 +599,7 @@ class XQueryLexer(ExtendedRegexLexer):
         ],
         'pragmacontents': [
             (r'#\)', Punctuation, 'operator'),
-            (u'\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
+            ('\\t|\\r|\\n|[\u0020-\uD7FF]|[\uE000-\uFFFD]|' +
              unirange(0x10000, 0x10ffff), Literal),
             (r'(\s+)', Text),
         ],
@@ -643,9 +642,9 @@ class XQueryLexer(ExtendedRegexLexer):
              bygroups(Keyword.Declaration, Text, Keyword.Declaration, Text, Keyword.Declaration), 'operator'),
             (r'(declare)(\s+)(context)(\s+)(item)',
              bygroups(Keyword.Declaration, Text, Keyword.Declaration, Text, Keyword.Declaration), 'operator'),
-            (ncname + ':\*', Name, 'operator'),
-            ('\*:'+ncname, Name.Tag, 'operator'),
-            ('\*', Name.Tag, 'operator'),
+            (ncname + r':\*', Name, 'operator'),
+            (r'\*:'+ncname, Name.Tag, 'operator'),
+            (r'\*', Name.Tag, 'operator'),
             (stringdouble, String.Double, 'operator'),
             (stringsingle, String.Single, 'operator'),
 
@@ -861,7 +860,7 @@ class QmlLexer(RegexLexer):
 
 
 class CirruLexer(RegexLexer):
-    """
+    r"""
     Syntax rules of Cirru can be found at:
     http://cirru.org/
 

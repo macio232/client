@@ -17,7 +17,7 @@ class OverlappingFieldsCanBeMerged(ValidationRule):
     __slots__ = ('_compared_fragments', '_cached_fields_and_fragment_names', )
 
     def __init__(self, context):
-        super(OverlappingFieldsCanBeMerged, self).__init__(context)
+        super().__init__(context)
         # A memoization for when two fragments are compared "between" each other for
         # conflicts. Two fragments may be compared many times, so memoizing this can
         # dramatically improve the performance of this validator.
@@ -65,7 +65,7 @@ class OverlappingFieldsCanBeMerged(ValidationRule):
     @classmethod
     def reason_message(cls, reason):
         if isinstance(reason, list):
-            return ' and '.join('subfields "{}" conflict because {}'.format(reason_name, cls.reason_message(sub_reason))
+            return ' and '.join(f'subfields "{reason_name}" conflict because {cls.reason_message(sub_reason)}'
                                 for reason_name, sub_reason in reason)
 
         return reason
@@ -372,7 +372,7 @@ def _find_conflict(context, cached_fields_and_fragment_names, compared_fragments
 
         if name1 != name2:
             return (
-                (response_name, '{} and {} are different fields'.format(name1, name2)),
+                (response_name, f'{name1} and {name2} are different fields'),
                 [ast1],
                 [ast2]
             )
@@ -387,7 +387,7 @@ def _find_conflict(context, cached_fields_and_fragment_names, compared_fragments
 
     if type1 and type2 and do_types_conflict(type1, type2):
         return (
-            (response_name, 'they return conflicting types {} and {}'.format(type1, type2)),
+            (response_name, f'they return conflicting types {type1} and {type2}'),
             [ast1],
             [ast2]
         )

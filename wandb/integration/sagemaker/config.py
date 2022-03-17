@@ -2,7 +2,6 @@ import json
 import os
 import re
 
-import six
 
 from . import files as sm_files
 
@@ -18,7 +17,7 @@ def parse_sm_config():
         sm_files.SM_RESOURCE_CONFIG
     ):
         conf["sagemaker_training_job_name"] = os.getenv("TRAINING_JOB_NAME")
-        # Hyper-parameter searchs quote configs...
+        # Hyper-parameter searches quote configs...
         for k, v in json.load(open(sm_files.SM_PARAM_CONFIG)).items():
             cast = v.strip('"')
             if re.match(r"^[-\d]+$", cast):

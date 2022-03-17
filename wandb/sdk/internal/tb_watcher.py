@@ -6,14 +6,13 @@ tensor b watcher.
 import glob
 import logging
 import os
+import queue
 import socket
 import sys
 import threading
 import time
 from typing import TYPE_CHECKING
 
-import six
-from six.moves import queue
 import wandb
 from wandb import util
 from wandb.viz import custom_chart_panel_config, CustomChart

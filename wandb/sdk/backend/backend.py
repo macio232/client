@@ -220,9 +220,7 @@ class Backend:
         assert self.wandb_process
         self.wandb_process.start()
         self._internal_pid = self.wandb_process.pid
-        logger.info(
-            f"started backend process with pid: {self.wandb_process.pid}"
-        )
+        logger.info(f"started backend process with pid: {self.wandb_process.pid}")
 
         self._module_main_uninstall()
 

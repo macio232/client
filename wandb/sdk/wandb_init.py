@@ -19,7 +19,6 @@ import traceback
 from typing import Any, Dict, Optional, Sequence, Union
 
 import shortuuid  # type: ignore
-import six
 import wandb
 from wandb import trigger
 from wandb.errors import UsageError

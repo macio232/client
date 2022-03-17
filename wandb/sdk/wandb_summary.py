@@ -2,7 +2,6 @@
 import abc
 import typing as t
 
-import six
 
 from .interface.summary_record import SummaryItem, SummaryRecord
 

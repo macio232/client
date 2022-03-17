@@ -4,7 +4,6 @@ import subprocess
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
-import six
 from wandb.docker import auth
 from wandb.docker import www_authenticate
 from wandb.errors import DockerError
@@ -190,9 +189,7 @@ def image_id_from_registry(image_name: str) -> Optional[str]:
         )
         res.raise_for_status()
     except requests.RequestException:
-        log.error(
-            f"Received {res} when attempting to get digest for {image_name}"
-        )
+        log.error(f"Received {res} when attempting to get digest for {image_name}")
         return None
     return "@".join([registry + "/" + repository, res.headers["Docker-Content-Digest"]])
 

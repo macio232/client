@@ -3,6 +3,7 @@ import logging
 import multiprocessing
 import os
 import platform
+import queue
 import signal
 import socket
 import subprocess
@@ -10,8 +11,6 @@ import sys
 import time
 import traceback
 
-import six
-from six.moves import queue
 import wandb
 from wandb import util
 from wandb import wandb_lib

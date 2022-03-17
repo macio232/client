@@ -1,6 +1,5 @@
 import os
 
-import six
 import wandb
 from wandb import env
 

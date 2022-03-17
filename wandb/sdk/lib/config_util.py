@@ -1,9 +1,7 @@
-#
 import json
 import logging
 import os
 
-import six
 import wandb
 from wandb.errors import Error
 from wandb.util import load_yaml

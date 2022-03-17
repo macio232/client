@@ -800,9 +800,7 @@ class Attrs:
         elif name in self._attrs.keys():
             return self._attrs[name]
         else:
-            raise AttributeError(
-                f"'{repr(self)}' object has no attribute '{name}'"
-            )
+            raise AttributeError(f"'{repr(self)}' object has no attribute '{name}'")
 
 
 class Paginator:
@@ -2926,9 +2924,7 @@ class ProjectArtifactCollections(Paginator):
             "artifactTypeName": type_name,
         }
 
-        super().__init__(
-            client, variable_values, per_page
-        )
+        super().__init__(client, variable_values, per_page)
 
     @property
     def length(self):
@@ -3817,8 +3813,7 @@ class Artifact(artifacts.Artifact):
         if log:
             delta = relativedelta(datetime.datetime.now() - start_time)
             termlog(
-                f"Done. {delta.hours}:{delta.minutes}:{delta.seconds}",
-                prefix=False,
+                f"Done. {delta.hours}:{delta.minutes}:{delta.seconds}", prefix=False,
             )
         return dirpath
 

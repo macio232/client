@@ -1,7 +1,5 @@
-#
 from pkg_resources import parse_version
 import requests
-import six
 import wandb
 
 
@@ -88,16 +86,13 @@ def check_available(current_version):
     delete_message = None
     if deleted:
         delete_message = "{} version {} has been retired!  Please upgrade.".format(
-            wandb._wandb_module,
-            current_version,
+            wandb._wandb_module, current_version,
         )
     yank_message = None
     if yanked:
         reason_message = "(%s)  " % yanked_reason if yanked_reason else ""
         yank_message = "{} version {} has been recalled!  {}Please upgrade.".format(
-            wandb._wandb_module,
-            current_version,
-            reason_message,
+            wandb._wandb_module, current_version, reason_message,
         )
 
     # A new version is available!

@@ -22,7 +22,6 @@ from click.exceptions import ClickException
 
 # pycreds has a find_executable that works in windows
 from dockerpycreds.utils import find_executable
-import six
 import wandb
 from wandb import Config
 from wandb import env, util
@@ -788,9 +787,7 @@ def sweep(
 
         found = api.sweep(sweep_id, "{}", entity=entity, project=project)
         if not found:
-            wandb.termerror(
-                f"Could not find sweep {entity}/{project}/{sweep_id}"
-            )
+            wandb.termerror(f"Could not find sweep {entity}/{project}/{sweep_id}")
             return
         sweep_obj_id = found["id"]
 
@@ -1560,8 +1557,7 @@ def put(path, name, description, type, alias):
     )
 
     wandb.termlog(
-        f'    artifact = run.use_artifact("{artifact_path}")\n',
-        prefix=False,
+        f'    artifact = run.use_artifact("{artifact_path}")\n', prefix=False,
     )
 
 

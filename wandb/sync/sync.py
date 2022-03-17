@@ -387,9 +387,9 @@ def get_runs(
     for f in fnames:
         dname = os.path.dirname(f)
         # TODO(frz): online runs are assumed to be synced, verify from binary log.
-        if os.path.exists(f"{f}{SYNCED_SUFFIX}") or os.path.basename(
-            dname
-        ).startswith("run-"):
+        if os.path.exists(f"{f}{SYNCED_SUFFIX}") or os.path.basename(dname).startswith(
+            "run-"
+        ):
             if include_synced:
                 filtered.append(_LocalRun(dname, True))
         else:

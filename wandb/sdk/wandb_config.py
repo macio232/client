@@ -5,7 +5,6 @@ config.
 
 import logging
 
-import six
 import wandb
 from wandb.util import (
     _is_artifact,

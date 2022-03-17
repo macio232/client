@@ -27,7 +27,6 @@ import sys
 import tempfile
 from typing import Optional
 
-import six
 import wandb
 from wandb import util
 
@@ -1843,10 +1842,10 @@ class _ImageFileType(_dtypes.Type):
                     for key in py_obj._boxes.keys()
                 }
                 box_score_keys = {
-                        key
-                        for val in py_obj._boxes.values()
-                        for box in val._val
-                        for key in box.get("scores", {}).keys()
+                    key
+                    for val in py_obj._boxes.values()
+                    for box in val._val
+                    for key in box.get("scores", {}).keys()
                 }
 
             else:

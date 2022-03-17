@@ -354,9 +354,7 @@ class Artifact(ArtifactInterface):
         self._ensure_can_add()
         path = os.path.join(self._artifact_dir.name, name.lstrip("/"))
         if os.path.exists(path):
-            raise ValueError(
-                f'File with name "{name}" already exists at "{path}"'
-            )
+            raise ValueError(f'File with name "{name}" already exists at "{path}"')
 
         util.mkdir_exists_ok(os.path.dirname(path))
         with util.fsync_open(path, mode) as f:
@@ -757,9 +755,7 @@ class ArtifactManifestV1(ArtifactManifest):
         storage_policy: StoragePolicy,
         entries: Optional[Mapping[str, ArtifactEntry]] = None,
     ) -> None:
-        super().__init__(
-            artifact, storage_policy, entries=entries
-        )
+        super().__init__(artifact, storage_policy, entries=entries)
 
     def to_manifest_json(self) -> Dict:
         """This is the JSON that's stored in wandb_manifest.json

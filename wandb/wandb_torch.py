@@ -101,12 +101,13 @@ class TorchHistory:
                 if not log_track_update(log_track):
                     return
                 for name, parameter in module.named_parameters():
-                    # for pytorch 0.3 Variables
-                    if isinstance(parameter, torch.autograd.Variable):
-                        data = parameter.data
-                    else:
-                        data = parameter
-                    self.log_tensor_stats(data.cpu(), "parameters/" + prefix + name)
+                    if parameter.requires_grad:
+                        # for pytorch 0.3 Variables
+                        if isinstance(parameter, torch.autograd.Variable):
+                            data = parameter.data
+                        else:
+                            data = parameter
+                        self.log_tensor_stats(data.cpu(), "parameters/" + prefix + name)
 
             log_track_params = log_track_init(log_freq)
             hook = module.register_forward_hook(
@@ -237,10 +238,14 @@ class TorchHistory:
             tensor = torch.Tensor(tensor_np)
             bins = torch.Tensor(bins_np)
 
-        wandb.run._log(
-            {name: wandb.Histogram(np_histogram=(tensor.tolist(), bins.tolist()))},
-            commit=False,
-        )
+        if len(flat) == 1:
+            history._row_update(
+                {name: flat}
+            )
+        else:
+            history._row_update(
+                {name: wandb.Histogram(np_histogram=(tensor.tolist(), bins.tolist()))}
+            )
 
     def _hook_variable_gradient_stats(self, var, name, log_track):
         """Logs a Variable's gradient's distribution statistics next time backward()

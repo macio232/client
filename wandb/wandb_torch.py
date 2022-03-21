@@ -239,12 +239,15 @@ class TorchHistory:
             bins = torch.Tensor(bins_np)
 
         if len(flat) == 1:
-            history._row_update(
-                {name: flat}
+            wandb.run._log(
+                {name: flat},
+                commit=False,
             )
         else:
-            history._row_update(
-                {name: wandb.Histogram(np_histogram=(tensor.tolist(), bins.tolist()))}
+            wandb.run._log(
+                {name: wandb.Histogram(
+                    np_histogram=(tensor.tolist(), bins.tolist()))},
+                commit=False,
             )
 
     def _hook_variable_gradient_stats(self, var, name, log_track):

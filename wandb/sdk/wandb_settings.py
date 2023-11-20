@@ -697,7 +697,7 @@ class Settings(SettingsData):
             _require_nexus={"value": False, "preprocessor": _str_as_bool},
             _save_requirements={"value": True, "preprocessor": _str_as_bool},
             _service_wait={
-                "value": 30,
+                "value": os.getenv("WANDB__SERVICE_WAIT", default=30),
                 "preprocessor": float,
                 "validator": self._validate__service_wait,
             },
